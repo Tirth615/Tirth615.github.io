@@ -18,43 +18,22 @@
             background-color: #000000;
             color: #e2e8f0;
             overflow-x: hidden;
-            /* Hides the default cursor */
-            cursor: none;
         }
 
-        /* The custom cursor */
-        #cursor {
+        #live-activity-canvas {
             position: fixed;
-            width: 20px;
-            height: 20px;
-            background-color: #a78bfa; /* A lighter violet color */
-            border-radius: 50%;
-            left: 0;
             top: 0;
-            pointer-events: none;
-            transform: translate(-50%, -50%);
-            transition: width 0.3s, height 0.3s, background-color 0.3s;
-            z-index: 10000;
-        }
-
-        /* The "gooey" effect is achieved by blurring and contrasting a container */
-        .effect-wrapper {
-            position: relative;
-            z-index: 1;
-            /* The magic happens here */
-            filter: url('#goo');
-        }
-
-        /* Class for the cursor when it's hovering over a magnetic item */
-        #cursor.hover {
-            width: 60px;
-            height: 60px;
-            background-color: rgba(167, 139, 250, 0.5);
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            /* Increased opacity for more presence */
+            opacity: 0.6;
         }
 
         .content-wrapper {
             position: relative;
-            z-index: 2; /* Content should be above the effect wrapper */
+            z-index: 1;
             max-width: 900px;
             margin: 0 auto;
             padding: 0 2rem;
@@ -63,17 +42,9 @@
         .section {
             padding: 6rem 0;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            /* For scroll animations */
-            opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
         }
         .section:last-child {
             border-bottom: none;
-        }
-        .section.is-visible {
-            opacity: 1;
-            transform: translateY(0);
         }
 
         .section-title {
@@ -95,53 +66,31 @@
             background: rgba(255, 255, 255, 0.05);
             transform: translateY(-5px);
         }
-
-        /* Magnetic items need a bit of padding to feel right */
-        .magnetic-item {
-            display: inline-block;
-            padding: 10px;
-            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
     </style>
 </head>
 <body class="antialiased">
 
-    <!-- Custom Cursor Element -->
-    <div id="cursor"></div>
-    
-    <!-- SVG filter for the "gooey" effect -->
-    <svg style="position:absolute; width:0; height:0;">
-      <defs>
-        <filter id="goo">
-          <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur" />
-          <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7" result="goo" />
-          <feBlend in="SourceGraphic" in2="goo" />
-        </filter>
-      </defs>
-    </svg>
+    <canvas id="live-activity-canvas"></canvas>
 
-    <!-- This wrapper is essential for the gooey effect to work on the cursor and elements -->
-    <div class="effect-wrapper"></div>
-    
     <div class="content-wrapper">
         <header class="py-6 flex justify-between items-center">
             <h2 class="text-xl font-bold text-white">Tirth Shah</h2>
             <nav>
-                <a href="#about" class="text-slate-400 hover:text-white px-3 py-2 magnetic-item">About</a>
-                <a href="#contact" class="text-slate-400 hover:text-white px-3 py-2 magnetic-item">Contact</a>
+                <a href="#about" class="text-slate-400 hover:text-white px-3 py-2">About</a>
+                <a href="#contact" class="text-slate-400 hover:text-white px-3 py-2">Contact</a>
             </nav>
         </header>
 
         <main>
             <!-- Hero Section -->
-            <section class="text-center py-24 section">
-                <img src="https://placehold.co/128x128/1a202c/ffffff?text=TS" alt="Tirth Shah" class="w-32 h-32 rounded-full mx-auto mb-6 border-4 border-slate-700 magnetic-item">
+            <section class="text-center py-24">
+                <img src="https://placehold.co/128x128/1a202c/ffffff?text=TS" alt="Tirth Shah" class="w-32 h-32 rounded-full mx-auto mb-6 border-4 border-slate-700">
                 <h1 class="text-5xl md:text-6xl font-black text-white mb-3">Tirth Shah</h1>
                 <p class="text-xl text-indigo-400 mb-6">iOS Developer</p>
                 <p class="max-w-2xl mx-auto text-slate-400 mb-8">
                     Passionate about building intuitive, high-performance, and scalable iOS applications with a strong focus on UI/UX design.
                 </p>
-                <a href="mailto:shahtirth615@gmail.com" class="bg-indigo-600 text-white font-bold py-3 px-8 rounded-full hover:bg-indigo-500 transition-colors duration-300 magnetic-item">
+                <a href="mailto:shahtirth615@gmail.com" class="bg-indigo-600 text-white font-bold py-3 px-8 rounded-full hover:bg-indigo-500 transition-colors duration-300">
                     Contact Me
                 </a>
             </section>
@@ -183,19 +132,19 @@
             <section id="projects" class="section">
                 <h3 class="section-title text-center">Projects</h3>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div class="project-card magnetic-item">
+                    <div class="project-card">
                         <h4 class="font-bold text-white text-lg mb-1">Billing App</h4>
                         <p class="text-slate-400">A comprehensive billing app using Swift, UIKit, and Firebase with PDF generation via PDFKit.</p>
                     </div>
-                    <div class="project-card magnetic-item">
+                    <div class="project-card">
                         <h4 class="font-bold text-white text-lg mb-1">ChatLive</h4>
                         <p class="text-slate-400">Real-time, multi-user chat application featuring secure authentication and media sharing via Firebase.</p>
                     </div>
-                    <div class="project-card magnetic-item">
+                    <div class="project-card">
                         <h4 class="font-bold text-white text-lg mb-1">MapKit Geolocation App</h4>
                         <p class="text-slate-400">Interactive mapping app using MapKit and CoreLocation for tracking, annotations, and route-planning.</p>
                     </div>
-                    <div class="project-card magnetic-item">
+                    <div class="project-card">
                         <h4 class="font-bold text-white text-lg mb-1">AVFoundation Music Player</h4>
                         <p class="text-slate-400">Feature-rich music player for local and streamed audio with background playback and lock screen controls.</p>
                     </div>
@@ -207,7 +156,7 @@
                  <h3 class="section-title">Contact</h3>
                  <h2 class="text-3xl font-bold text-white mb-4">Get In Touch</h2>
                  <p class="text-slate-400 max-w-xl mx-auto mb-8">I'm currently seeking new opportunities and would love to hear from you. Whether you have a question or just want to say hi, feel free to reach out.</p>
-                 <a href="mailto:shahtirth615@gmail.com" class="bg-indigo-600 text-white font-bold py-3 px-8 rounded-full hover:bg-indigo-500 transition-colors duration-300 magnetic-item">
+                 <a href="mailto:shahtirth615@gmail.com" class="bg-indigo-600 text-white font-bold py-3 px-8 rounded-full hover:bg-indigo-500 transition-colors duration-300">
                     Say Hello
                 </a>
             </section>
@@ -215,72 +164,120 @@
 
         <footer class="text-center py-8">
             <div class="flex justify-center space-x-6 mb-4">
-                <a href="https://github.com/tirth615" target="_blank" class="text-slate-400 hover:text-white magnetic-item"><i data-feather="github"></i></a>
-                <a href="https://linkedin.com/in/shahtirth615" target="_blank" class="text-slate-400 hover:text-white magnetic-item"><i data-feather="linkedin"></i></a>
+                <a href="https://github.com/tirth615" target="_blank" class="text-slate-400 hover:text-white"><i data-feather="github"></i></a>
+                <a href="https://linkedin.com/in/shahtirth615" target="_blank" class="text-slate-400 hover:text-white"><i data-feather="linkedin"></i></a>
             </div>
             <p class="text-slate-500">Designed & Built by Tirth Shah</p>
         </footer>
     </div>
 
     <script>
-        // Wrap all script logic in a DOMContentLoaded event listener
-        document.addEventListener('DOMContentLoaded', () => {
-            // Feather Icons initialization
-            feather.replace();
+        // Feather Icons
+        feather.replace();
 
-            // Hide custom cursor on touch devices to prevent issues
-            if ('ontouchstart' in window) {
-                document.getElementById('cursor').style.display = 'none';
-                return;
+        // Live Activity Canvas Animation
+        const canvas = document.getElementById('live-activity-canvas');
+        const ctx = canvas.getContext('2d');
+        let width, height, particles;
+        let mouse = { x: null, y: null };
+
+        function init() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+            particles = [];
+            // Increased particle count for a denser web
+            const particleCount = (width < 768) ? 60 : 100; // Fewer particles on smaller screens
+            for (let i = 0; i < particleCount; i++) {
+                particles.push(new Particle());
+            }
+        }
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.vx = (Math.random() - 0.5) * 0.8;
+                this.vy = (Math.random() - 0.5) * 0.8;
+                this.radius = 2;
             }
 
-            const cursor = document.getElementById('cursor');
-            const magneticItems = document.querySelectorAll('.magnetic-item');
-            const strength = 50; // How strong the magnetic pull is
+            update() {
+                // Add a slow drift to the particles
+                this.x += this.vx + 0.05;
+                this.y += this.vy + 0.05;
 
-            // 1. Custom Cursor Movement
-            document.addEventListener('mousemove', (e) => {
-                // Use requestAnimationFrame for smoother animation
-                requestAnimationFrame(() => {
-                    cursor.style.left = `${e.clientX}px`;
-                    cursor.style.top = `${e.clientY}px`;
-                });
-            });
+                if (this.x < 0 || this.x > width) this.vx *= -1;
+                if (this.y < 0 || this.y > height) this.vy *= -1;
 
-            // 2. Magnetic Effect on designated items
-            magneticItems.forEach(item => {
-                item.addEventListener('mouseenter', () => {
-                    cursor.classList.add('hover');
-                });
-                item.addEventListener('mouseleave', () => {
-                    cursor.classList.remove('hover');
-                    item.style.transform = 'translate(0, 0)';
-                });
-                item.addEventListener('mousemove', (e) => {
-                    const rect = item.getBoundingClientRect();
-                    const x = e.clientX - rect.left - rect.width / 2;
-                    const y = e.clientY - rect.top - rect.height / 2;
-
-                    // Move the item towards the cursor for the magnetic pull effect
-                    item.style.transform = `translate(${x / strength}px, ${y / strength}px)`;
-                });
-            });
-
-            // 3. Scroll-triggered Fade-in Animations
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('is-visible');
+                // Interaction with mouse
+                if (mouse.x) {
+                    let dx = this.x - mouse.x;
+                    let dy = this.y - mouse.y;
+                    let distance = Math.sqrt(dx * dx + dy * dy);
+                    if (distance < 200) { // Increased interaction radius
+                        this.x += dx / distance * 2;
+                        this.y += dy / distance * 2;
                     }
-                });
-            }, {
-                threshold: 0.1 // Trigger when 10% of the element is visible
+                }
+            }
+
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+                ctx.fill();
+            }
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+            
+            particles.forEach(p => {
+                p.update();
             });
 
-            document.querySelectorAll('.section').forEach(section => {
-                observer.observe(section);
-            });
+            connectParticles();
+            requestAnimationFrame(animate);
+        }
+
+        function connectParticles() {
+            for (let i = 0; i < particles.length; i++) {
+                for (let j = i; j < particles.length; j++) {
+                    let dx = particles[i].x - particles[j].x;
+                    let dy = particles[i].y - particles[j].y;
+                    let distance = Math.sqrt(dx * dx + dy * dy);
+
+                    // Increased connection distance
+                    const connectDistance = (width < 768) ? 120 : 150;
+                    if (distance < connectDistance) {
+                        ctx.beginPath();
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        // Make lines more visible
+                        ctx.strokeStyle = `rgba(129, 140, 248, ${1 - distance / connectDistance})`; // Indigo color
+                        ctx.lineWidth = 0.8; // Thicker lines
+                        ctx.stroke();
+                    }
+                }
+            }
+        }
+
+        window.addEventListener('resize', () => {
+            init();
         });
+
+        window.addEventListener('mousemove', (e) => {
+            mouse.x = e.clientX;
+            mouse.y = e.clientY;
+        });
+        
+        window.addEventListener('mouseout', () => {
+            mouse.x = null;
+            mouse.y = null;
+        });
+
+        init();
+        animate();
     </script>
 </body>
 </html>
