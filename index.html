@@ -1,35 +1,277 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Tirth Shah | Portfolio</title>
-  <link rel="stylesheet" href="style.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>John Doe | 3D Portfolio</title>
+    
+    <!-- Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
+
+    <style>
+        /* Custom styles to complement Tailwind */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0a0a0a;
+            color: #e2e8f0;
+            overflow-x: hidden;
+        }
+
+        /* Style for the 3D canvas */
+        #bg-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            outline: none;
+        }
+
+        /* Styling for content sections for better readability over the 3D background */
+        .content-section {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* Glassmorphism effect for content containers */
+        .glass-card {
+            background: rgba(17, 24, 39, 0.6);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 1rem;
+        }
+
+        /* Custom scrollbar for a more polished look */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #111827;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #4f46e5;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #6366f1;
+        }
+    </style>
 </head>
-<body>
-  <header>
-    <h1>Tirth Shah</h1>
-    <p>iOS Developer | Web Developer | MCA Student</p>
-  </header>
+<body class="antialiased">
 
-  <section class="about">
-    <h2>About Me</h2>
-    <p>I am a passionate developer with experience in iOS, web, Firebase, and project management. I enjoy building real-world apps that solve problems.</p>
-  </section>
+    <!-- The 3D background canvas -->
+    <canvas id="bg-canvas"></canvas>
 
-  <section class="projects">
-    <h2>Projects</h2>
-    <ul>
-      <li><strong>Chat App:</strong> Firebase Firestore, iOS UIKit</li>
-      <li><strong>HRMS System:</strong> Frappe, ERP, Custom Workflow</li>
-      <li><strong>Music Player:</strong> YouTube + Local, UIKit + AVPlayer</li>
-    </ul>
-  </section>
+    <!-- Main content container -->
+    <main class="relative z-10">
 
-  <section class="contact">
-    <h2>Contact</h2>
-    <p>Email: tirthshah@example.com</p>
-    <p>GitHub: <a href="https://github.com/tirthshah" target="_blank">github.com/tirthshah</a></p>
-  </section>
+        <!-- Hero Section -->
+        <section id="home" class="content-section h-screen justify-center items-center text-center">
+            <div class="max-w-4xl mx-auto">
+                <h1 class="text-5xl md:text-7xl lg:text-8xl font-black text-white uppercase tracking-tighter mb-4">
+                    John Doe
+                </h1>
+                <p class="text-xl md:text-2xl text-indigo-300 font-medium">
+                    Creative Developer & 3D Artist
+                </p>
+                <p class="mt-6 max-w-2xl mx-auto text-slate-400">
+                    I build immersive and beautiful web experiences from concept to production. Scroll down to explore my world.
+                </p>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="content-section">
+            <div class="max-w-4xl mx-auto glass-card p-8 md:p-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-white mb-6">About Me</h2>
+                <p class="text-slate-300 mb-4">
+                    Hello! I'm a passionate developer with a love for 3D graphics, interactive design, and pushing the boundaries of the web. With over 5 years of experience, I specialize in creating unique user experiences that are both functional and visually stunning.
+                </p>
+                <p class="text-slate-300">
+                    My toolkit includes JavaScript, Three.js, React, and a strong foundation in design principles. I thrive on bringing complex ideas to life and enjoy collaborating with teams to build amazing products.
+                </p>
+            </div>
+        </section>
+
+        <!-- Projects Section -->
+        <section id="projects" class="content-section">
+            <div class="max-w-6xl mx-auto">
+                <h2 class="text-3xl md:text-4xl font-bold text-white mb-12 text-center">My Projects</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    
+                    <!-- Project Card 1 -->
+                    <div class="glass-card p-6 transform hover:scale-105 transition-transform duration-300">
+                        <img src="https://placehold.co/600x400/1e1b4b/ffffff?text=Project+One" alt="Project One" class="rounded-lg mb-4 w-full h-48 object-cover">
+                        <h3 class="text-xl font-bold text-white mb-2">Cosmic Explorer</h3>
+                        <p class="text-slate-400 text-sm">An interactive 3D solar system visualization built with Three.js and real astronomical data.</p>
+                    </div>
+
+                    <!-- Project Card 2 -->
+                    <div class="glass-card p-6 transform hover:scale-105 transition-transform duration-300">
+                        <img src="https://placehold.co/600x400/4c1d95/ffffff?text=Project+Two" alt="Project Two" class="rounded-lg mb-4 w-full h-48 object-cover">
+                        <h3 class="text-xl font-bold text-white mb-2">Generative Art Gallery</h3>
+                        <p class="text-slate-400 text-sm">A web-based gallery showcasing dynamic art pieces generated in real-time using p5.js.</p>
+                    </div>
+
+                    <!-- Project Card 3 -->
+                    <div class="glass-card p-6 transform hover:scale-105 transition-transform duration-300">
+                        <img src="https://placehold.co/600x400/1e40af/ffffff?text=Project+Three" alt="Project Three" class="rounded-lg mb-4 w-full h-48 object-cover">
+                        <h3 class="text-xl font-bold text-white mb-2">AR Product Visualizer</h3>
+                        <p class="text-slate-400 text-sm">An augmented reality app for e-commerce that lets users view products in their own space.</p>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="content-section">
+            <div class="max-w-2xl mx-auto glass-card p-8 md:p-12 text-center">
+                <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">Get In Touch</h2>
+                <p class="text-slate-300 mb-8">
+                    I'm currently available for freelance work. Have a project in mind? Let's talk.
+                </p>
+                <a href="mailto:hello@johndoe.com" class="inline-block bg-indigo-600 text-white font-bold py-3 px-8 rounded-lg hover:bg-indigo-500 transition-colors duration-300">
+                    Say Hello
+                </a>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Three.js and GSAP for animations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/ScrollTrigger.min.js"></script>
+
+    <script type="module">
+        // --- SCENE SETUP ---
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({
+            canvas: document.querySelector('#bg-canvas'),
+            alpha: true // Make canvas transparent
+        });
+
+        renderer.setPixelRatio(window.devicePixelRatio);
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        camera.position.setZ(30);
+
+        // --- LIGHTING ---
+        const pointLight = new THREE.PointLight(0xffffff, 2, 300);
+        pointLight.position.set(5, 5, 5);
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+        scene.add(pointLight, ambientLight);
+
+        // --- 3D OBJECTS ---
+
+        // Main Torus Knot
+        const geometry = new THREE.TorusKnotGeometry(10, 3, 100, 16);
+        const material = new THREE.MeshStandardMaterial({ 
+            color: 0x4f46e5, // Indigo color
+            wireframe: true 
+        });
+        const torusKnot = new THREE.Mesh(geometry, material);
+        scene.add(torusKnot);
+
+        // Particle System (Stars)
+        const particlesGeometry = new THREE.BufferGeometry();
+        const particlesCount = 5000;
+        const posArray = new Float32Array(particlesCount * 3);
+
+        for (let i = 0; i < particlesCount * 3; i++) {
+            posArray[i] = (Math.random() - 0.5) * (Math.random() * 500);
+        }
+
+        particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+        const particlesMaterial = new THREE.PointsMaterial({
+            size: 0.015,
+            color: 0xffffff
+        });
+        const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
+        scene.add(particlesMesh);
+
+        // --- MOUSE INTERACTION ---
+        let mouseX = 0;
+        let mouseY = 0;
+        document.addEventListener('mousemove', (event) => {
+            mouseX = event.clientX;
+            mouseY = event.clientY;
+        });
+
+        // --- SCROLL-BASED ANIMATION with GSAP ---
+        function setupScrollAnimation() {
+            gsap.registerPlugin(ScrollTrigger);
+
+            const tl = gsap.timeline({
+                scrollTrigger: {
+                    trigger: 'main',
+                    start: 'top top',
+                    end: 'bottom bottom',
+                    scrub: 2, // Smooth scrubbing
+                }
+            });
+
+            tl.to(torusKnot.rotation, { x: 4, y: 6, z: 2 })
+              .to(camera.position, { z: 50 }, 0) // Zoom out at the start
+              .to(camera.position, { z: 30 }, 1) // Zoom back in
+              .to(torusKnot.position, { x: 20 }, 1) // Move to the right for about section
+              .to(torusKnot.rotation, { x: 8, y: 10, z: 4 }, 1)
+              .to(torusKnot.position, { x: -20 }, 2) // Move to the left for projects
+              .to(torusKnot.rotation, { x: 12, y: 14, z: 6 }, 2)
+              .to(camera.position, { z: 50 }, 3) // Zoom out for contact
+              .to(torusKnot.position, { x: 0 }, 3);
+        }
+        
+        setupScrollAnimation();
+
+        // --- ANIMATION LOOP ---
+        const clock = new THREE.Clock();
+        function animate() {
+            requestAnimationFrame(animate);
+
+            const elapsedTime = clock.getElapsedTime();
+
+            // Animate main object
+            torusKnot.rotation.y = 0.5 * elapsedTime;
+
+            // Animate particles
+            particlesMesh.rotation.y = -0.02 * elapsedTime;
+            
+            // Mouse parallax effect
+            const targetX = mouseX * 0.001;
+            const targetY = mouseY * 0.001;
+            camera.position.x += (targetX - camera.position.x) * .05;
+            camera.position.y += (-targetY - camera.position.y) * .05;
+            camera.lookAt(scene.position);
+
+
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        // --- RESPONSIVENESS ---
+        window.addEventListener('resize', () => {
+            // Update camera
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+
+            // Update renderer
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        });
+    </script>
 </body>
 </html>
