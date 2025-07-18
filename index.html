@@ -22,6 +22,17 @@
             cursor: none;
         }
 
+        /* The live background canvas */
+        #live-background-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            opacity: 0.4; /* Subtle effect */
+        }
+
         /* The custom cursor */
         #cursor {
             position: fixed;
@@ -54,7 +65,7 @@
 
         .content-wrapper {
             position: relative;
-            z-index: 2; /* Content should be above the effect wrapper */
+            z-index: 2; /* Content should be above the effect wrapper and background */
             max-width: 900px;
             margin: 0 auto;
             padding: 0 2rem;
@@ -105,6 +116,9 @@
     </style>
 </head>
 <body class="antialiased">
+
+    <!-- The new live background canvas -->
+    <canvas id="live-background-canvas"></canvas>
 
     <!-- Custom Cursor Element -->
     <div id="cursor"></div>
@@ -223,12 +237,85 @@
     </div>
 
     <script>
-        // Wrap all script logic in a DOMContentLoaded event listener
         document.addEventListener('DOMContentLoaded', () => {
             // Feather Icons initialization
             feather.replace();
 
-            // Hide custom cursor on touch devices to prevent issues
+            // --- LIVE BACKGROUND ANIMATION ---
+            const bgCanvas = document.getElementById('live-background-canvas');
+            const bgCtx = bgCanvas.getContext('2d');
+            let particlesArray;
+
+            function setupBackground() {
+                bgCanvas.width = window.innerWidth;
+                bgCanvas.height = window.innerHeight;
+                particlesArray = [];
+                const numberOfParticles = (bgCanvas.width < 768) ? 30 : 50;
+                for (let i = 0; i < numberOfParticles; i++) {
+                    particlesArray.push(new Particle());
+                }
+            }
+
+            class Particle {
+                constructor() {
+                    this.x = Math.random() * bgCanvas.width;
+                    this.y = Math.random() * bgCanvas.height;
+                    this.size = Math.random() * 1.5 + 1;
+                    this.speedX = Math.random() * 0.4 - 0.2;
+                    this.speedY = Math.random() * 0.4 - 0.2;
+                }
+                update() {
+                    this.x += this.speedX;
+                    this.y += this.speedY;
+
+                    if (this.x > bgCanvas.width || this.x < 0) this.speedX *= -1;
+                    if (this.y > bgCanvas.height || this.y < 0) this.speedY *= -1;
+                }
+                draw() {
+                    bgCtx.fillStyle = 'rgba(167, 139, 250, 0.8)';
+                    bgCtx.beginPath();
+                    bgCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    bgCtx.fill();
+                }
+            }
+
+            function connectParticles() {
+                let opacityValue = 1;
+                for (let a = 0; a < particlesArray.length; a++) {
+                    for (let b = a; b < particlesArray.length; b++) {
+                        let distance = ((particlesArray[a].x - particlesArray[b].x) * (particlesArray[a].x - particlesArray[b].x)) +
+                                       ((particlesArray[a].y - particlesArray[b].y) * (particlesArray[a].y - particlesArray[b].y));
+                        
+                        const connectDistance = (bgCanvas.width / 7) * (bgCanvas.height / 7);
+                        if (distance < connectDistance) {
+                            opacityValue = 1 - (distance / 20000);
+                            bgCtx.strokeStyle = `rgba(167, 139, 250, ${opacityValue})`;
+                            bgCtx.lineWidth = 0.5;
+                            bgCtx.beginPath();
+                            bgCtx.moveTo(particlesArray[a].x, particlesArray[a].y);
+                            bgCtx.lineTo(particlesArray[b].x, particlesArray[b].y);
+                            bgCtx.stroke();
+                        }
+                    }
+                }
+            }
+
+            function animateBackground() {
+                bgCtx.clearRect(0, 0, bgCanvas.width, bgCanvas.height);
+                for (let i = 0; i < particlesArray.length; i++) {
+                    particlesArray[i].update();
+                    particlesArray[i].draw();
+                }
+                connectParticles();
+                requestAnimationFrame(animateBackground);
+            }
+
+            setupBackground();
+            animateBackground();
+            window.addEventListener('resize', setupBackground);
+
+
+            // --- MAGNETIC CURSOR & SCROLL ANIMATIONS ---
             if ('ontouchstart' in window) {
                 document.getElementById('cursor').style.display = 'none';
                 return;
@@ -236,22 +323,17 @@
 
             const cursor = document.getElementById('cursor');
             const magneticItems = document.querySelectorAll('.magnetic-item');
-            const strength = 50; // How strong the magnetic pull is
+            const strength = 50;
 
-            // 1. Custom Cursor Movement
             document.addEventListener('mousemove', (e) => {
-                // Use requestAnimationFrame for smoother animation
                 requestAnimationFrame(() => {
                     cursor.style.left = `${e.clientX}px`;
                     cursor.style.top = `${e.clientY}px`;
                 });
             });
 
-            // 2. Magnetic Effect on designated items
             magneticItems.forEach(item => {
-                item.addEventListener('mouseenter', () => {
-                    cursor.classList.add('hover');
-                });
+                item.addEventListener('mouseenter', () => cursor.classList.add('hover'));
                 item.addEventListener('mouseleave', () => {
                     cursor.classList.remove('hover');
                     item.style.transform = 'translate(0, 0)';
@@ -260,22 +342,17 @@
                     const rect = item.getBoundingClientRect();
                     const x = e.clientX - rect.left - rect.width / 2;
                     const y = e.clientY - rect.top - rect.height / 2;
-
-                    // Move the item towards the cursor for the magnetic pull effect
                     item.style.transform = `translate(${x / strength}px, ${y / strength}px)`;
                 });
             });
 
-            // 3. Scroll-triggered Fade-in Animations
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         entry.target.classList.add('is-visible');
                     }
                 });
-            }, {
-                threshold: 0.1 // Trigger when 10% of the element is visible
-            });
+            }, { threshold: 0.1 });
 
             document.querySelectorAll('.section').forEach(section => {
                 observer.observe(section);
