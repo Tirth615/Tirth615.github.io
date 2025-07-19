@@ -36,7 +36,6 @@
 
         /* Styling for content sections for better readability over the 3D background */
         .content-section {
-            /* Further reduced vertical padding for a more compact layout */
             padding: 4rem 2rem; 
             position: relative;
             z-index: 1;
@@ -57,6 +56,12 @@
             -webkit-backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 1rem;
+            transition: transform 0.3s ease-out, background-color 0.3s ease-out;
+        }
+
+        .project-link .glass-card:hover {
+            transform: translateY(-5px);
+            background: rgba(30, 41, 59, 0.8);
         }
 
         /* Custom scrollbar for a more polished look */
@@ -92,7 +97,7 @@
                 <p class="text-xl md:text-2xl text-indigo-300 font-medium">
                     iOS Developer
                 </p>
-                <p class="mt-6 max-w-2xl mx-auto text-slate-400">
+                <p class="mt-6 max-w-2xl mx-auto text-lg text-slate-300">
                     Enthusiastic and detail-oriented iOS Developer with a strong interest in building intuitive and high-quality iOS applications.
                 </p>
             </div>
@@ -103,10 +108,8 @@
             <div class="max-w-4xl mx-auto glass-card p-8 md:p-12">
                 <h2 class="text-3xl md:text-4xl font-bold text-white mb-6 text-center">About Me</h2>
                 <p class="text-slate-300 mb-4">
-                    I have hands-on experience in Swift, SwiftUI, and UIKit, and successfully developed an iOS eCommerce application during my training, gaining expertise in API integration, user authentication, and application lifecycle management.
-                </p>
-                <p class="text-slate-300">
-                    Highly motivated to build user-friendly, high-performance, and scalable iOS applications, with a strong interest in UI/UX design and leveraging Apple's latest frameworks. Known for strong problem-solving skills, attention to detail, and a continuous drive to learn and grow in the iOS development ecosystem.
+                    I have hands-on experience in Swift, SwiftUI, and UIKit, and successfully developed an iOS eCommerce application during my training, 
+                    gaining expertise in API integration, user authentication, and application lifecycle management.
                 </p>
             </div>
         </section>
@@ -154,17 +157,20 @@
                     <div class="glass-card p-6">
                         <h3 class="text-xl font-bold text-white">iOS Development Intern</h3>
                         <p class="text-indigo-300 font-medium mb-2">Akash Technolabs | Nov 2023 - May 2024</p>
-                        <p class="text-slate-400">Integrated third-party Libraries and frameworks using CocoaPods for enhanced app functionality and worked on an eCommerce application project.</p>
+                        <p class="text-slate-400">Integrated third-party Libraries and frameworks using CocoaPods for enhanced app functionality and 
+                            worked on an eCommerce application project.</p>
                     </div>
                     <div class="glass-card p-6">
                         <h3 class="text-xl font-bold text-white">iOS Development Intern</h3>
                         <p class="text-indigo-300 font-medium mb-2">Digital Auxilio Technologies | Apr 2023 - Jun 2023</p>
-                        <p class="text-slate-400">Designed and developed iOS applications using Swift and Objective-C, collaborating with cross-functional teams to create seamless user experiences.</p>
+                        <p class="text-slate-400">Designed and developed iOS applications using Swift and Objective-C, collaborating with cross-functional 
+                            teams to create seamless user experiences.</p>
                     </div>
                     <div class="glass-card p-6">
                         <h3 class="text-xl font-bold text-white">Python Web Developer Intern</h3>
                         <p class="text-indigo-300 font-medium mb-2">Axisray | Jun 2022 - Mar 2023</p>
-                        <p class="text-slate-400">Developed and maintained web applications using Django and Flask frameworks, managed databases, and wrote efficient SQL queries.</p>
+                        <p class="text-slate-400">Developed and maintained web applications using Django and Flask frameworks, managed databases, 
+                            and wrote efficient SQL queries.</p>
                     </div>
                 </div>
             </div>
@@ -175,29 +181,67 @@
             <div class="max-w-6xl mx-auto">
                 <h2 class="text-3xl md:text-4xl font-bold text-white mb-12 text-center">My Projects</h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    <div class="glass-card p-6">
-                        <h3 class="text-xl font-bold text-white mb-2">ChatLive</h3>
-                        <p class="text-slate-400 text-sm">Real-time chat application using Swift, SwiftUI, and UIKit, featuring messaging, user authentication, and media sharing.</p>
-                    </div>
-                    <div class="glass-card p-6">
+                    
+                    <a href="https://github.com/tirth615/ChatLive-Using-UIKit" target="_blank" rel="noopener noreferrer" class="project-link block">
+                        <div class="glass-card p-6 h-full">
+                            <h3 class="text-xl font-bold text-white mb-2">ChatLive</h3>
+                            <p class="text-slate-400 text-sm">Real-time chat application using Swift, SwiftUI, and UIKit, featuring messaging, 
+                                user authentication, and media sharing.</p>
+                        </div>
+                    </a>
+
+                    <div class="glass-card p-6 h-full">
                         <h3 class="text-xl font-bold text-white mb-2">E-commerce App</h3>
-                        <p class="text-slate-400 text-sm">An e-commerce application using Swift, SwiftUI, and UIKit, focusing on creating a functional and visually appealing mobile shopping experience.</p>
+                        <p class="text-slate-400 text-sm">An e-commerce application using Swift, SwiftUI, and UIKit, focusing on creating a 
+                            functional and visually appealing mobile shopping experience.</p>
                     </div>
-                    <div class="glass-card p-6">
-                        <h3 class="text-xl font-bold text-white mb-2">QR Code Generator & Scanner</h3>
-                        <p class="text-slate-400 text-sm">A utility app using Swift, UIKit, and CoreImage for real-time QR code scanning and dynamic QR code generation from user input.</p>
+
+                    <a href="https://github.com/tirth615/QrCodeGenerate-Scanner" target="_blank" rel="noopener noreferrer" class="project-link block">
+                        <div class="glass-card p-6 h-full">
+                            <h3 class="text-xl font-bold text-white mb-2">QR Code Generator & Scanner</h3>
+                            <p class="text-slate-400 text-sm">A utility app using Swift, UIKit, and CoreImage for real-time QR code scanning and 
+                                dynamic QR code generation from user input.</p>
+                        </div>
+                    </a>
+
+                    <a href="https://github.com/tirth615/BillingApp" target="_blank" rel="noopener noreferrer" class="project-link block">
+                        <div class="glass-card p-6 h-full">
+                            <h3 class="text-xl font-bold text-white mb-2">Billing App</h3>
+                            <p class="text-slate-400 text-sm">A full-featured billing and invoicing application using Swift, UIKit, and 
+                                Firebase for data handling and PDF export with PDFKit.</p>
+                        </div>
+                    </a>
+
+                    <a href="https://github.com/tirth615/Map-Kit-Using-UIKit" target="_blank" rel="noopener noreferrer" class="project-link block">
+                        <div class="glass-card p-6 h-full">
+                            <h3 class="text-xl font-bold text-white mb-2">MapKit App</h3>
+                            <p class="text-slate-400 text-sm">Interactive mapping app using MapKit and CoreLocation to view current location, 
+                                drop pins, and generate routes with MKDirections.</p>
+                        </div>
+                    </a>
+
+                    <a href="https://github.com/tirth615/AVFoundation-task" target="_blank" rel="noopener noreferrer" class="project-link block">
+                        <div class="glass-card p-6 h-full">
+                            <h3 class="text-xl font-bold text-white mb-2">AVFoundation Music Player</h3>
+                            <p class="text-slate-400 text-sm">iOS music player using AVFoundation for local and streamed audio, 
+                                with background playback and lock screen media controls.</p>
+                        </div>
+                    </a>
+
+                    <div class="glass-card p-6 h-full">
+                        <h3 class="text-xl font-bold text-white mb-2">Fitness Tracker</h3>
+                        <p class="text-slate-400 text-sm">An application to monitor workout routines and nutrition, built with HealthKit 
+                            integration to sync data seamlessly.</p>
                     </div>
-                    <div class="glass-card p-6">
-                        <h3 class="text-xl font-bold text-white mb-2">Billing App</h3>
-                        <p class="text-slate-400 text-sm">A full-featured billing and invoicing application using Swift, UIKit, and Firebase for data handling and PDF export with PDFKit.</p>
+                     <div class="glass-card p-6 h-full">
+                        <h3 class="text-xl font-bold text-white mb-2">Recipe Discovery App</h3>
+                        <p class="text-slate-400 text-sm">A recipe app with a custom API backend that allows users to search, save, and 
+                            share their favorite recipes.</p>
                     </div>
-                    <div class="glass-card p-6">
-                        <h3 class="text-xl font-bold text-white mb-2">MapKit App</h3>
-                        <p class="text-slate-400 text-sm">Interactive mapping app using MapKit and CoreLocation to view current location, drop pins, and generate routes with MKDirections.</p>
-                    </div>
-                    <div class="glass-card p-6">
-                        <h3 class="text-xl font-bold text-white mb-2">AVFoundation Music Player</h3>
-                        <p class="text-slate-400 text-sm">iOS music player using AVFoundation for local and streamed audio, with background playback and lock screen media controls.</p>
+                     <div class="glass-card p-6 h-full">
+                        <h3 class="text-xl font-bold text-white mb-2">Task Manager</h3>
+                        <p class="text-slate-400 text-sm">A productivity app using Core Data for robust local storage and notifications to 
+                            remind users of upcoming tasks.</p>
                     </div>
                 </div>
             </div>
@@ -210,9 +254,15 @@
                 <p class="text-slate-300 mb-8">
                     I'm seeking new opportunities to contribute to an innovative team where I can apply my iOS skills and grow as a developer.
                 </p>
-                <a href="mailto:shahtirth615@gmail.com" class="inline-block bg-indigo-600 text-white font-bold py-3 px-8 rounded-lg hover:bg-indigo-500 transition-colors duration-300">
-                    Say Hello
-                </a>
+                <div class="flex justify-center gap-4">
+                    <a href="https://drive.google.com/file/d/16UjmKtBBEJs1wHjZrjs191sPhpKKpcG9/view?usp=sharing" target="_blank" rel="noopener noreferrer" 
+                    class="inline-block bg-gray-700 text-white font-bold py-3 px-8 rounded-lg hover:bg-gray-600 transition-colors duration-300">
+                        View Resume
+                    </a>
+                    <button id="open-contact-modal" class="inline-block bg-indigo-600 text-white font-bold py-3 px-8 rounded-lg hover:bg-indigo-500 transition-colors duration-300">
+                        Say Hello
+                    </button>
+                </div>
                 <div class="flex justify-center space-x-6 mt-8">
                     <a href="https://linkedin.com/in/shahtirth615" target="_blank" class="text-slate-400 hover:text-white"><i data-feather="linkedin" class="w-8 h-8"></i></a>
                     <a href="https://github.com/tirth615" target="_blank" class="text-slate-400 hover:text-white"><i data-feather="github" class="w-8 h-8"></i></a>
@@ -221,6 +271,27 @@
         </section>
 
     </main>
+
+    <!-- Contact Modal -->
+    <div id="contact-modal" class="hidden fixed inset-0 bg-black bg-opacity-70 z-50 flex justify-center items-center">
+        <div class="glass-card p-8 rounded-lg text-center relative max-w-sm w-full">
+            <button id="close-contact-modal" class="absolute top-2 right-2 text-gray-400 hover:text-white">
+                <i data-feather="x" class="w-6 h-6"></i>
+            </button>
+            <h3 class="text-2xl font-bold text-white mb-6">Contact Me</h3>
+            <div class="space-y-4">
+                 <a href="mailto:shahtirth615@gmail.com" class="flex items-center justify-center gap-3 w-full bg-gray-700 text-white font-bold py-3 px-6 rounded-lg hover:bg-gray-600 transition-colors duration-300">
+                    <i data-feather="mail" class="w-5 h-5"></i>
+                    Send an Email
+                </a>
+                <a href="https://wa.me/919429562246" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center gap-3 w-full bg-green-600 text-white font-bold py-3 px-6 rounded-lg hover:bg-green-500 transition-colors duration-300">
+                    <i data-feather="message-circle" class="w-5 h-5"></i>
+                    Chat on WhatsApp
+                </a>
+            </div>
+        </div>
+    </div>
+
 
     <!-- Three.js and GSAP for animations -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -231,7 +302,29 @@
         // Feather Icons
         feather.replace();
 
-        // --- SCENE SETUP ---
+        // --- MODAL LOGIC ---
+        const openModalBtn = document.getElementById('open-contact-modal');
+        const closeModalBtn = document.getElementById('close-contact-modal');
+        const contactModal = document.getElementById('contact-modal');
+
+        openModalBtn.addEventListener('click', () => {
+            contactModal.classList.remove('hidden');
+            feather.replace(); // Re-initialize icons inside the modal
+        });
+
+        closeModalBtn.addEventListener('click', () => {
+            contactModal.classList.add('hidden');
+        });
+
+        // Close modal if clicking outside the content
+        contactModal.addEventListener('click', (e) => {
+            if (e.target === contactModal) {
+                contactModal.classList.add('hidden');
+            }
+        });
+
+
+        // --- 3D SCENE SETUP ---
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         const renderer = new THREE.WebGLRenderer({
