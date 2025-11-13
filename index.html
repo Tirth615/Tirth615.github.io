@@ -629,12 +629,12 @@
             }, 3000);
         }
 
-        // vCard download
+        // vCard download with iOS support
         function addToContact() {
             const vcard = `BEGIN:VCARD
 VERSION:3.0
 FN:Tirth Shah
-ORG:Digital Auxilio
+N:Shah;Tirth;;;
 TEL;TYPE=CELL:+919510374575
 TEL;TYPE=WORK:+919429562246
 EMAIL:shahtirth615@gmail.com
@@ -648,17 +648,38 @@ X-SOCIALPROFILE;TYPE=Facebook:https://www.facebook.com/tirth.shah615
 X-SOCIALPROFILE;TYPE=Instagram:https://www.instagram.com/tirthshah615/
 END:VCARD`;
 
-            const blob = new Blob([vcard], { type: 'text/vcard' });
-            const url = window.URL.createObjectURL(blob);
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = 'Tirth_Shah.vcf';
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            window.URL.revokeObjectURL(url);
+            // Detect iOS
+            const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
             
-            showNotification('✓ Contact saved successfully!');
+            if (isIOS) {
+                // For iOS, use data URL approach
+                const dataUrl = 'data:text/vcard;charset=utf-8,' + encodeURIComponent(vcard);
+                const link = document.createElement('a');
+                link.href = dataUrl;
+                link.download = 'Tirth_Shah.vcf';
+                link.target = '_blank';
+                link.style.display = 'none';
+                
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                
+                showNotification('✓ Opening contact card...');
+            } else {
+                // For other devices, use blob
+                const blob = new Blob([vcard], { type: 'text/vcard;charset=utf-8' });
+                const url = window.URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = 'Tirth_Shah.vcf';
+                
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                window.URL.revokeObjectURL(url);
+                
+                showNotification('✓ Contact saved successfully!');
+            }
         }
 
         // Share functionality
@@ -699,4 +720,4 @@ END:VCARD`;
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
-                const
+                const 
