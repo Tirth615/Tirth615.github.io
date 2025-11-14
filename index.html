@@ -500,7 +500,7 @@
                 </div>
             </a>
 
-            <a href="https://tirth-portfolio.me/" target="_blank" style="text-decoration: none;">
+            <a href="portfolio.html" target="_blank" style="text-decoration: none;">
                 <div class="contact-item">
                     <span class="contact-text">Portfolio</span>
                     <div class="contact-icon">🌐</div>
@@ -630,37 +630,8 @@
         }
 
         // vCard download
-//         function addToContact() {
-//             const vcard = `BEGIN:VCARD
-// VERSION:3.0
-// FN:Tirth Shah
-// ORG:Digital Auxilio
-// TITLE:iOS Developer
-// TEL;TYPE=CELL:+919510374575
-// TEL;TYPE=WORK:+919429562246
-// EMAIL:shahtirth615@gmail.com
-// ADR;TYPE=WORK:;;Ahmedabad;Gujarat;;380007;India
-// URL:https://tirth-portfolio.me/
-// URL:https://www.linkedin.com/in/tirthshah615
-// URL:https://www.facebook.com/tirth.shah615
-// URL:https://www.instagram.com/tirthshah615/
-// END:VCARD`;
-
-//             const blob = new Blob([vcard], { type: 'text/vcard' });
-//             const url = window.URL.createObjectURL(blob);
-//             const link = document.createElement('a');
-//             link.href = url;
-//             link.download = 'Tirth_Shah.vcf';
-//             document.body.appendChild(link);
-//             link.click();
-//             document.body.removeChild(link);
-//             window.URL.revokeObjectURL(url);
-            
-//             showNotification('✓ Contact saved successfully!');
-//         }
-
-function addToContact() {
-    const vcard = `BEGIN:VCARD
+        function addToContact() {
+            const vcard = `BEGIN:VCARD
 VERSION:3.0
 ORG:Tirth Shah
 TEL;TYPE=CELL:+919510374575
@@ -677,18 +648,19 @@ URL;TYPE=Instagram:https://www.instagram.com/tirthshah615/
 X-ABLabel:Instagram
 END:VCARD`;
     
-    const blob = new Blob([vcard], { type: 'text/vcard' });
-    const url = window.URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = 'Tirth_Shah.vcf';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    window.URL.revokeObjectURL(url);
-    
-    showNotification('✓ Contact saved successfully!');
-}
+            const blob = new Blob([vcard], { type: 'text/vcard' });
+            const url = window.URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'Tirth_Shah.vcf';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            window.URL.revokeObjectURL(url);
+            
+            showNotification('✓ Contact saved successfully!');
+        }
+
         // Share functionality
         function shareContact() {
             if (navigator.share) {
