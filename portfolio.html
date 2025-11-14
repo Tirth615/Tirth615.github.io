@@ -3,11 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tirth Shah - Digital Business Card</title>
+    <title>Tirth Shah - Portfolio</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    
+    <script src="https://unpkg.com/feather-icons"></script>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
     
     <style>
         * {
@@ -33,7 +37,33 @@
             width: 100%;
             height: 100%;
             z-index: 0;
-            opacity: 0.7;
+            opacity: 0.5;
+        }
+
+        .glass-card {
+            background: rgba(17, 24, 39, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 24px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(79, 70, 229, 0.3);
+        }
+
+        .content-section {
+            padding: 60px 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .project-link {
+            text-decoration: none;
+            color: inherit;
         }
 
         .header {
@@ -50,49 +80,41 @@
             top: 0;
             z-index: 100;
             letter-spacing: 3px;
-            animation: slideDown 0.6s ease;
         }
 
-        @keyframes slideDown {
-            from {
-                transform: translateY(-100%);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
-
-        .container {
-            max-width: 500px;
-            margin: 0 auto;
-            padding: 40px 20px;
+        .hero-section {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
             position: relative;
             z-index: 1;
         }
 
-        /* Enhanced glass card */
-        .glass-card {
-            background: rgba(17, 24, 39, 0.7);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 24px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        .hero-title {
+            font-size: clamp(2rem, 8vw, 4.5rem);
+            font-weight: 900;
+            color: #ffffff;
+            margin-bottom: 1rem;
+            letter-spacing: -0.02em;
         }
 
-        .glass-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 40px rgba(79, 70, 229, 0.3);
+        .hero-subtitle {
+            font-size: clamp(1rem, 3vw, 1.5rem);
+            color: #818cf8;
+            margin-bottom: 2rem;
+            font-weight: 600;
         }
 
-        .profile-section {
-            padding: 50px 30px;
-            text-align: center;
-            margin-bottom: 20px;
-            animation: fadeInUp 0.8s ease;
+        .hero-description {
+            max-width: 600px;
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 2rem;
+            line-height: 1.8;
         }
 
         @keyframes fadeInUp {
@@ -106,309 +128,8 @@
             }
         }
 
-        .profile-image {
-            width: 130px;
-            height: 130px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, rgba(79, 70, 229, 0.3), rgba(99, 102, 241, 0.3));
-            backdrop-filter: blur(10px);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 56px;
-            margin: 0 auto 30px;
-            border: 3px solid rgba(129, 140, 248, 0.4);
-            box-shadow: 
-                0 8px 32px rgba(79, 70, 229, 0.4),
-                0 0 0 8px rgba(79, 70, 229, 0.1);
-            animation: pulse 3s ease infinite;
-            position: relative;
-        }
-
-        @keyframes pulse {
-            0%, 100% {
-                transform: scale(1);
-                box-shadow: 
-                    0 8px 32px rgba(79, 70, 229, 0.4),
-                    0 0 0 8px rgba(79, 70, 229, 0.1);
-            }
-            50% {
-                transform: scale(1.05);
-                box-shadow: 
-                    0 12px 40px rgba(79, 70, 229, 0.5),
-                    0 0 0 12px rgba(79, 70, 229, 0.2);
-            }
-        }
-
-        .name {
-            font-size: 32px;
-            font-weight: 900;
-            color: #ffffff;
-            margin-bottom: 10px;
-            letter-spacing: -0.5px;
-        }
-
-        .title {
-            font-size: 18px;
-            color: #818cf8;
-            margin-bottom: 8px;
-            font-weight: 600;
-        }
-
-        .company {
-            font-size: 15px;
-            color: rgba(255, 255, 255, 0.6);
-            margin-bottom: 40px;
-            font-weight: 500;
-        }
-
-        .action-button {
-            width: 100%;
-            padding: 16px;
-            margin: 12px 0;
-            background: rgba(79, 70, 229, 0.15);
-            backdrop-filter: blur(10px);
-            color: #ffffff;
-            border: 1px solid rgba(129, 140, 248, 0.3);
-            border-radius: 14px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            letter-spacing: 0.3px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .action-button::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(129, 140, 248, 0.2), transparent);
-            transition: left 0.5s;
-        }
-
-        .action-button:hover::before {
-            left: 100%;
-        }
-
-        .action-button:hover {
-            background: rgba(79, 70, 229, 0.3);
-            border-color: rgba(129, 140, 248, 0.5);
-            transform: translateY(-3px);
-            box-shadow: 0 8px 24px rgba(79, 70, 229, 0.4);
-        }
-
-        .action-button:active {
-            transform: translateY(-1px);
-        }
-
-        .divider {
-            height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(129, 140, 248, 0.3), transparent);
-            margin: 35px 0;
-        }
-
-        .section-title {
-            color: rgba(129, 140, 248, 0.9);
-            font-size: 13px;
-            font-weight: 700;
-            margin-bottom: 15px;
-            text-align: left;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-
-        .info-text {
-            font-size: 16px;
-            color: rgba(255, 255, 255, 0.85);
-            text-align: left;
-            line-height: 1.6;
-            font-weight: 500;
-        }
-
-        .contact-section {
-            padding: 30px 25px;
-            animation: fadeInUp 0.8s ease 0.2s both;
-        }
-
-        .contact-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 18px;
-            margin: 10px 0;
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 14px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .contact-item::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(129, 140, 248, 0.1), transparent);
-            transition: left 0.5s;
-        }
-
-        .contact-item:hover::before {
-            left: 100%;
-        }
-
-        .contact-item:hover {
-            background: rgba(79, 70, 229, 0.15);
-            border-color: rgba(129, 140, 248, 0.3);
-            transform: translateX(8px);
-            box-shadow: 0 4px 20px rgba(79, 70, 229, 0.3);
-        }
-
-        .contact-text {
-            font-size: 15px;
-            color: rgba(255, 255, 255, 0.95);
-            font-weight: 600;
-        }
-
-        .contact-icon {
-            width: 44px;
-            height: 44px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-            flex-shrink: 0;
-            background: rgba(79, 70, 229, 0.2);
-            border: 1px solid rgba(129, 140, 248, 0.3);
-            transition: all 0.3s ease;
-        }
-
-        .contact-item:hover .contact-icon {
-            transform: scale(1.15) rotate(5deg);
-            background: rgba(79, 70, 229, 0.4);
-            box-shadow: 0 4px 16px rgba(79, 70, 229, 0.4);
-        }
-
-        .username-section {
-            display: flex;
-            align-items: center;
-            padding: 18px;
-            margin-bottom: 20px;
-            background: rgba(79, 70, 229, 0.15);
-            border: 1px solid rgba(129, 140, 248, 0.3);
-            border-radius: 14px;
-            transition: all 0.3s ease;
-        }
-
-        .username-section:hover {
-            transform: scale(1.02);
-            box-shadow: 0 4px 24px rgba(79, 70, 229, 0.4);
-        }
-
-        .username-icon {
-            width: 48px;
-            height: 48px;
-            border-radius: 12px;
-            background: linear-gradient(135deg, #4f46e5, #6366f1);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #ffffff;
-            font-size: 20px;
-            font-weight: 700;
-            margin-right: 14px;
-            box-shadow: 0 4px 16px rgba(79, 70, 229, 0.5);
-        }
-
-        .username-text {
-            font-size: 17px;
-            color: rgba(255, 255, 255, 0.95);
-            font-weight: 700;
-        }
-
-        .share-button {
-            width: 44px;
-            height: 44px;
-            border-radius: 12px;
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            color: #ffffff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            margin-left: auto;
-            font-size: 20px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .share-button:hover {
-            background: linear-gradient(135deg, #4f46e5, #6366f1);
-            transform: rotate(45deg) scale(1.1);
-            box-shadow: 0 4px 16px rgba(79, 70, 229, 0.5);
-        }
-
-        /* Success notification */
-        .notification {
-            position: fixed;
-            top: 100px;
-            right: 20px;
-            background: linear-gradient(135deg, rgba(34, 197, 94, 0.95), rgba(22, 163, 74, 0.95));
-            backdrop-filter: blur(10px);
-            color: white;
-            padding: 16px 24px;
-            border-radius: 12px;
-            box-shadow: 0 8px 32px rgba(34, 197, 94, 0.5);
-            z-index: 1000;
-            animation: slideInRight 0.4s ease, fadeOut 0.4s ease 2.6s;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            font-weight: 600;
-        }
-
-        @keyframes slideInRight {
-            from {
-                transform: translateX(400px);
-                opacity: 0;
-            }
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
-        }
-
-        @keyframes fadeOut {
-            to {
-                opacity: 0;
-                transform: translateX(400px);
-            }
-        }
-
-        @media (max-width: 480px) {
-            .container {
-                padding: 30px 16px;
-            }
-            
-            .profile-section {
-                padding: 40px 24px;
-            }
-            
-            .name {
-                font-size: 28px;
-            }
-
-            .notification {
-                right: 10px;
-                left: 10px;
-            }
+        .fade-in {
+            animation: fadeInUp 0.8s ease;
         }
     </style>
 </head>
@@ -417,15 +138,28 @@
     <canvas id="particle-canvas"></canvas>
 
     <div class="header">
-        TIRTH SHAH
+        TIRTH SHAH - PORTFOLIO
     </div>
 
-    <div class="container">
-        <div class="glass-card profile-section">
-            <div class="profile-image">
-                👨‍💻
+    <main>
+        <!-- Hero Section -->
+        <section class="hero-section">
+            <div class="fade-in">
+                <h1 class="hero-title">Hi, I'm Tirth Shah</h1>
+                <p class="hero-subtitle">iOS Developer</p>
+                <p class="hero-description">
+                    Passionate about creating intuitive, high-performance iOS applications using Swift, SwiftUI, and UIKit. 
+                    I focus on building scalable, user-centric solutions that deliver exceptional experiences.
+                </p>
+                <div class="flex gap-4 justify-center">
+                    <a href="#projects" class="inline-block bg-indigo-600 text-white font-bold py-3 px-8 rounded-lg hover:bg-indigo-500 transition-colors duration-300">
+                        View Projects
+                    </a>
+                    <a href="index.html" class="inline-block bg-gray-700 text-white font-bold py-3 px-8 rounded-lg hover:bg-gray-600 transition-colors duration-300">
+                        Contact Card
+                    </a>
+                </div>
             </div>
-<<<<<<< HEAD
         </section>
 
         <!-- About Section -->
@@ -471,7 +205,7 @@
                             <p class="text-slate-400">API Integration (RESTful)</p>
                             <p class="text-slate-400">User Authentication</p>
                             <p class="text-slate-400">Application Lifecycle</p>
-                            <p class="text-slate-400">Local Data Persistence (e.g., Core Data, UserDefaults)</p>
+                            <p class="text-slate-400">Local Data Persistence</p>
                         </div>
                         <div>
                             <h3 class="font-bold text-lg text-white mb-2">Developer Tools</h3>
@@ -627,14 +361,14 @@
                 <p class="text-slate-300 mb-8">
                     I'm seeking new opportunities to contribute to an innovative team where I can apply my iOS skills and grow as a developer.
                 </p>
-                <div class="flex justify-center gap-4">
+                <div class="flex gap-4 justify-center">
                     <a href="https://drive.google.com/file/d/1lB0BUXp4PupAShpcDR9FibMjTykbuJvL/view?usp=sharing" target="_blank" rel="noopener noreferrer" 
                     class="inline-block bg-gray-700 text-white font-bold py-3 px-8 rounded-lg hover:bg-gray-600 transition-colors duration-300">
                         View Resume
                     </a>
-                    <button id="open-contact-modal" class="inline-block bg-indigo-600 text-white font-bold py-3 px-8 rounded-lg hover:bg-indigo-500 transition-colors duration-300">
+                    <a href="mailto:shahtirth615@gmail.com" class="inline-block bg-indigo-600 text-white font-bold py-3 px-8 rounded-lg hover:bg-indigo-500 transition-colors duration-300">
                         Contact Me
-                    </button>
+                    </a>
                 </div>
                 <div class="flex justify-center space-x-6 mt-8">
                     <a href="https://linkedin.com/in/tirthshah615" target="_blank" class="text-slate-400 hover:text-white"><i data-feather="linkedin" class="w-8 h-8"></i></a>
@@ -645,106 +379,11 @@
 
     </main>
 
-    <!-- Contact Modal -->
-    <div id="contact-modal" class="hidden fixed inset-0 bg-black bg-opacity-70 z-50 flex justify-center items-center">
-        <div class="glass-card p-8 rounded-lg text-center relative max-w-sm w-full">
-            <button id="close-contact-modal" class="absolute top-2 right-2 text-gray-400 hover:text-white">
-                <i data-feather="x" class="w-6 h-6"></i>
-=======
-            
-            <div class="name">Tirth Shah</div>
-            <div class="title">iOS Developer</div>
-            <div class="company">Digital Auxilio</div>
-            
-            <button class="action-button" onclick="addToContact()">
-                📥 Add to Contact
->>>>>>> 7d99e54 (change the UI)
-            </button>
-            
-            <button class="action-button" onclick="shareContact()">
-                🔗 Share Contact
-            </button>
-            
-            <div class="divider"></div>
-            
-            <div class="section-title">📍 Location</div>
-            <div class="info-text">Ahmedabad, Gujarat, India</div>
-        </div>
-
-        <div class="glass-card contact-section">
-            <div class="username-section">
-                <div class="username-icon">T</div>
-                <div class="username-text">@tirthshah</div>
-                <button class="share-button" onclick="shareProfile()">↗</button>
-            </div>
-
-            <a href="tel:+919510374575" style="text-decoration: none;">
-                <div class="contact-item">
-                    <span class="contact-text">+91 9510374575</span>
-                    <div class="contact-icon">📞</div>
-                </div>
-            </a>
-
-            <a href="tel:+919429562246" style="text-decoration: none;">
-                <div class="contact-item">
-                    <span class="contact-text">+91 9429562246</span>
-                    <div class="contact-icon">📞</div>
-                </div>
-            </a>
-
-            <a href="https://wa.me/919429562246" target="_blank" style="text-decoration: none;">
-                <div class="contact-item">
-                    <span class="contact-text">WhatsApp</span>
-                    <div class="contact-icon">💬</div>
-                </div>
-            </a>
-
-            <a href="https://www.facebook.com/tirth.shah615" target="_blank" style="text-decoration: none;">
-                <div class="contact-item">
-                    <span class="contact-text">Facebook</span>
-                    <div class="contact-icon">f</div>
-                </div>
-            </a>
-
-            <a href="https://www.instagram.com/tirthshah615/" target="_blank" style="text-decoration: none;">
-                <div class="contact-item">
-                    <span class="contact-text">Instagram</span>
-                    <div class="contact-icon">📷</div>
-                </div>
-            </a>
-
-            <a href="https://www.linkedin.com/in/tirthshah615" target="_blank" style="text-decoration: none;">
-                <div class="contact-item">
-                    <span class="contact-text">LinkedIn</span>
-                    <div class="contact-icon">in</div>
-                </div>
-            </a>
-
-            <a href="https://drive.google.com/file/d/1lB0BUXp4PupAShpcDR9FibMjTykbuJvL/view" target="_blank" style="text-decoration: none;">
-                <div class="contact-item">
-                    <span class="contact-text">Resume</span>
-                    <div class="contact-icon">📄</div>
-                </div>
-            </a>
-
-            <a href="https://tirth-portfolio.me/" target="_blank" style="text-decoration: none;">
-                <div class="contact-item">
-                    <span class="contact-text">Portfolio</span>
-                    <div class="contact-icon">🌐</div>
-                </div>
-            </a>
-
-            <a href="mailto:shahtirth615@gmail.com" style="text-decoration: none;">
-                <div class="contact-item">
-                    <span class="contact-text">shahtirth615@gmail.com</span>
-                    <div class="contact-icon">✉️</div>
-                </div>
-            </a>
-        </div>
-    </div>
-
     <script>
-        // Particle Network Animation (matching portfolio style)
+        // Initialize Feather Icons
+        feather.replace();
+
+        // Particle Network Animation
         const canvas = document.getElementById('particle-canvas');
         const ctx = canvas.getContext('2d');
         let width, height, particles;
@@ -843,82 +482,6 @@
 
         init();
         animate();
-
-        // Notification system
-        function showNotification(message) {
-            const notification = document.createElement('div');
-            notification.className = 'notification';
-            notification.textContent = message;
-            document.body.appendChild(notification);
-            
-            setTimeout(() => {
-                notification.remove();
-            }, 3000);
-        }
-
-        // vCard download
-        function addToContact() {
-            const vcard = `BEGIN:VCARD
-VERSION:3.0
-FN:Tirth Shah
-ORG:Digital Auxilio
-TITLE:iOS Developer
-TEL;TYPE=CELL:+919510374575
-TEL;TYPE=WORK:+919429562246
-EMAIL:shahtirth615@gmail.com
-ADR;TYPE=WORK:;;Ahmedabad;Gujarat;;380007;India
-URL:https://tirth-portfolio.me/
-URL:https://www.linkedin.com/in/tirthshah615
-URL:https://www.facebook.com/tirth.shah615
-URL:https://www.instagram.com/tirthshah615/
-END:VCARD`;
-
-            const blob = new Blob([vcard], { type: 'text/vcard' });
-            const url = window.URL.createObjectURL(blob);
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = 'Tirth_Shah.vcf';
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            window.URL.revokeObjectURL(url);
-            
-            showNotification('✓ Contact saved successfully!');
-        }
-
-        // Share functionality
-        function shareContact() {
-            if (navigator.share) {
-                navigator.share({
-                    title: 'Tirth Shah - iOS Developer',
-                    text: 'Check out my digital business card!',
-                    url: window.location.href
-                }).then(() => {
-                    showNotification('✓ Shared successfully!');
-                }).catch(err => {
-                    if (err.name !== 'AbortError') {
-                        fallbackCopyLink();
-                    }
-                });
-            } else {
-                fallbackCopyLink();
-            }
-        }
-
-        function fallbackCopyLink() {
-            navigator.clipboard.writeText(window.location.href)
-                .then(() => {
-                    showNotification('✓ Link copied to clipboard!');
-                })
-                .catch(err => {
-                    console.log('Error copying:', err);
-                    showNotification('❌ Could not copy link');
-                });
-        }
-
-        function shareProfile() {
-            shareContact();
-        }
 
         // Smooth scroll
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
