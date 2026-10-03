@@ -1,580 +1,830 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tirth Shah - Portfolio</title>
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
-    
-    <script src="https://unpkg.com/feather-icons"></script>
-    
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tirth Shah | iOS App Developer</title>
+  <meta name="description" content="Tirth Shah — iOS developer building fast, polished Swift & SwiftUI apps. Two apps live on the App Store.">
+  <meta property="og:title" content="Tirth Shah | iOS App Developer">
+  <meta property="og:description" content="I build iOS apps people keep on their home screen. Swift · SwiftUI · UIKit · Firebase.">
+  <meta property="og:image" content="https://tirth-portfolio.me/1024.png">
+  <meta name="theme-color" content="#0a0a0c">
 
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #000000;
-            color: #e2e8f0;
-            min-height: 100vh;
-            position: relative;
-            overflow-x: hidden;
-        }
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" defer></script>
 
-        /* Particle network canvas */
-        #particle-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 0;
-            opacity: 0.5;
-        }
+  <style>
+    :root {
+      --bg: #0a0a0c;
+      --bg-2: #111115;
+      --surface: rgba(255, 255, 255, 0.035);
+      --surface-hover: rgba(255, 255, 255, 0.06);
+      --border: rgba(255, 255, 255, 0.08);
+      --border-strong: rgba(255, 255, 255, 0.16);
+      --text: #f4efe9;
+      --muted: #9b958e;
+      --faint: #5e5a55;
+      --accent: #ff6a3d;
+      --accent-2: #ffb15c;
+      --accent-soft: rgba(255, 106, 61, 0.12);
+      --radius: 20px;
+      --display: 'Bricolage Grotesque', system-ui, sans-serif;
+      --body: 'Inter', system-ui, sans-serif;
+      --mono: 'JetBrains Mono', ui-monospace, monospace;
+    }
 
-        .glass-card {
-            background: rgba(17, 24, 39, 0.7);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 24px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: var(--body);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; text-decoration: none; }
+    img { display: block; max-width: 100%; }
+    ::selection { background: var(--accent); color: #fff; }
 
-        .glass-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 40px rgba(79, 70, 229, 0.3);
-        }
+    /* ---------- Ambient background ---------- */
+    .grain {
+      position: fixed; inset: 0; pointer-events: none; z-index: 0;
+      background:
+        radial-gradient(60vw 60vw at 85% -10%, rgba(255, 106, 61, 0.14), transparent 60%),
+        radial-gradient(50vw 50vw at -10% 40%, rgba(90, 110, 255, 0.08), transparent 60%);
+    }
+    .cursor-glow {
+      position: fixed; width: 420px; height: 420px; border-radius: 50%;
+      pointer-events: none; z-index: 0; transform: translate(-50%, -50%);
+      background: radial-gradient(circle, rgba(255, 106, 61, 0.08), transparent 65%);
+      transition: opacity .3s; opacity: 0;
+    }
 
-        .content-section {
-            padding: 60px 20px;
-            position: relative;
-            z-index: 1;
-        }
+    .wrap { position: relative; z-index: 1; max-width: 1180px; margin: 0 auto; padding: 0 24px; }
 
-        .project-link {
-            text-decoration: none;
-            color: inherit;
-        }
+    /* ---------- Nav ---------- */
+    .nav {
+      position: fixed; top: 16px; left: 50%; transform: translateX(-50%);
+      z-index: 50; width: min(1132px, calc(100% - 32px));
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 10px 10px 10px 20px; border-radius: 999px;
+      background: rgba(14, 14, 17, 0.6); border: 1px solid var(--border);
+      backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+    }
+    .logo { font-family: var(--display); font-weight: 800; font-size: 20px; letter-spacing: -0.02em; }
+    .logo span { color: var(--accent); }
+    .nav-links { display: flex; gap: 28px; font-size: 14px; color: var(--muted); }
+    .nav-links a:hover { color: var(--text); }
+    .btn {
+      display: inline-flex; align-items: center; gap: 10px;
+      font-weight: 600; font-size: 15px; border-radius: 999px;
+      padding: 14px 24px; transition: transform .2s, background .2s, box-shadow .2s, border-color .2s;
+      cursor: pointer; border: 1px solid transparent; white-space: nowrap;
+    }
+    .btn-primary { background: var(--accent); color: #140804; box-shadow: 0 10px 30px -10px rgba(255, 106, 61, 0.7); }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 16px 40px -12px rgba(255, 106, 61, 0.9); }
+    .btn-ghost { border-color: var(--border-strong); color: var(--text); }
+    .btn-ghost:hover { background: var(--surface-hover); transform: translateY(-2px); }
+    .btn-sm { padding: 10px 18px; font-size: 14px; }
+    .btn svg { width: 18px; height: 18px; }
 
-        .header {
-            background: rgba(20, 20, 20, 0.7);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            color: #ffffff;
-            padding: 20px;
-            text-align: center;
-            font-size: 16px;
-            font-weight: 700;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            letter-spacing: 3px;
-        }
+    /* ---------- Hero ---------- */
+    .hero { min-height: 100vh; display: grid; grid-template-columns: 1.05fr 1fr; align-items: center; gap: 24px; padding-top: 110px; padding-bottom: 40px; }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 10px;
+      font-family: var(--mono); font-size: 12px; text-transform: uppercase; letter-spacing: .12em;
+      color: var(--muted); padding: 8px 14px; border: 1px solid var(--border); border-radius: 999px;
+      background: var(--surface);
+    }
+    .pulse { width: 8px; height: 8px; border-radius: 50%; background: #3ddc84; box-shadow: 0 0 0 0 rgba(61, 220, 132, .6); animation: pulse 2s infinite; }
+    @keyframes pulse { 70% { box-shadow: 0 0 0 10px rgba(61, 220, 132, 0); } 100% { box-shadow: 0 0 0 0 rgba(61, 220, 132, 0); } }
+    h1 {
+      font-family: var(--display); font-weight: 800; letter-spacing: -0.035em;
+      font-size: clamp(44px, 6.4vw, 84px); line-height: .98; margin: 24px 0 22px;
+    }
+    h1 .hl {
+      background: linear-gradient(100deg, var(--accent) 10%, var(--accent-2) 90%);
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+    }
+    .lead { font-size: clamp(17px, 1.5vw, 19px); color: var(--muted); max-width: 520px; margin: 0 0 34px; }
+    .lead strong { color: var(--text); font-weight: 500; }
+    .cta-row { display: flex; flex-wrap: wrap; gap: 12px; }
+    .stats { display: flex; gap: 40px; margin-top: 52px; flex-wrap: wrap; }
+    .stat b { display: block; font-family: var(--display); font-size: 36px; font-weight: 700; letter-spacing: -0.03em; line-height: 1; }
+    .stat span { font-size: 13px; color: var(--muted); }
 
-        .hero-section {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 20px;
-            position: relative;
-            z-index: 1;
-        }
+    .stage { position: relative; height: min(720px, 86vh); }
+    #scene { position: absolute; inset: -60px -80px; width: calc(100% + 160px); height: calc(100% + 120px); }
+    .stage-fallback {
+      position: absolute; inset: 0; display: none; place-items: center;
+    }
+    .no-webgl .stage-fallback { display: grid; }
+    .stage-fallback img { width: 46%; border-radius: 22%; box-shadow: 0 40px 80px -20px rgba(255, 106, 61, .5); transform: rotate(-8deg); }
+    .floating-tag {
+      position: absolute; z-index: 2; font-family: var(--mono); font-size: 12px;
+      padding: 8px 12px; border-radius: 12px; border: 1px solid var(--border-strong);
+      background: rgba(20, 20, 24, .7); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+      color: var(--text); animation: bob 6s ease-in-out infinite;
+    }
+    .floating-tag i { font-style: normal; color: var(--accent); }
+    .tag-1 { top: 16%; left: 2%; }
+    .tag-2 { bottom: 20%; right: 0; animation-delay: -3s; }
+    @keyframes bob { 50% { transform: translateY(-12px); } }
 
-        .hero-title {
-            font-size: clamp(2rem, 8vw, 4.5rem);
-            font-weight: 900;
-            color: #ffffff;
-            margin-bottom: 1rem;
-            letter-spacing: -0.02em;
-        }
+    .scroll-hint { position: absolute; left: 50%; bottom: 22px; transform: translateX(-50%); font-family: var(--mono); font-size: 11px; color: var(--faint); letter-spacing: .2em; text-transform: uppercase; }
 
-        .hero-subtitle {
-            font-size: clamp(1rem, 3vw, 1.5rem);
-            color: #818cf8;
-            margin-bottom: 2rem;
-            font-weight: 600;
-        }
+    /* ---------- Marquee ---------- */
+    .marquee { position: relative; z-index: 1; border-block: 1px solid var(--border); overflow: hidden; padding: 22px 0; background: rgba(255, 255, 255, .015); }
+    .marquee-track { display: flex; gap: 48px; width: max-content; animation: marquee 38s linear infinite; }
+    .marquee span { font-family: var(--display); font-size: 26px; font-weight: 600; color: var(--faint); white-space: nowrap; display: flex; align-items: center; gap: 48px; }
+    .marquee span::after { content: '✦'; color: var(--accent); font-size: 16px; }
+    @keyframes marquee { to { transform: translateX(-50%); } }
 
-        .hero-description {
-            max-width: 600px;
-            font-size: 1.1rem;
-            color: rgba(255, 255, 255, 0.7);
-            margin-bottom: 2rem;
-            line-height: 1.8;
-        }
-        .app-icon {
-            width: 80px;
-            height: 80px;
-            border-radius: 16px;
-            object-fit: cover;
-}
+    /* ---------- Sections ---------- */
+    section.block { padding: 130px 0 0; }
+    .sec-head { display: flex; justify-content: space-between; align-items: end; gap: 32px; margin-bottom: 52px; flex-wrap: wrap; }
+    .kicker { font-family: var(--mono); font-size: 12px; color: var(--accent); letter-spacing: .14em; text-transform: uppercase; margin-bottom: 14px; }
+    h2 { font-family: var(--display); font-weight: 700; font-size: clamp(34px, 4.4vw, 56px); letter-spacing: -0.03em; line-height: 1.04; margin: 0; max-width: 680px; }
+    .sec-head p { color: var(--muted); max-width: 380px; margin: 0; }
 
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
+    .card {
+      position: relative; border-radius: var(--radius); background: var(--surface);
+      border: 1px solid var(--border); padding: 28px; overflow: hidden;
+      transition: border-color .3s, background .3s;
+      transform-style: preserve-3d;
+    }
+    .card:hover { border-color: var(--border-strong); background: var(--surface-hover); }
+    [data-tilt] { transition: transform .5s cubic-bezier(.2, .8, .2, 1), border-color .3s, background .3s; will-change: transform; }
+    [data-tilt]::before {
+      content: ''; position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity .3s;
+      background: radial-gradient(500px circle at var(--mx, 50%) var(--my, 50%), rgba(255, 140, 90, .13), transparent 45%);
+    }
+    [data-tilt]:hover::before { opacity: 1; }
+    .lift { transform: translateZ(40px); }
 
-        .fade-in {
-            animation: fadeInUp 0.8s ease;
-        }
-    </style>
+    /* Services */
+    .services { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+    .svc-icon {
+      width: 52px; height: 52px; border-radius: 14px; display: grid; place-items: center;
+      background: var(--accent-soft); color: var(--accent); margin-bottom: 52px;
+    }
+    .svc-icon svg { width: 26px; height: 26px; }
+    .card h3 { font-family: var(--display); font-size: 22px; font-weight: 700; letter-spacing: -0.02em; margin: 0 0 10px; line-height: 1.2; }
+    .card p { color: var(--muted); font-size: 15px; margin: 0; }
+
+    /* Featured apps */
+    .apps { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .app { padding: 36px; display: flex; flex-direction: column; min-height: 520px; }
+    .app-top { display: flex; align-items: center; gap: 18px; margin-bottom: 26px; }
+    .app-icon { width: 84px; height: 84px; border-radius: 22%; box-shadow: 0 18px 40px -12px rgba(0, 0, 0, .8); }
+    .badge { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: #3ddc84; font-family: var(--mono); }
+    .badge::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+    .app h3 { font-size: 30px; margin-bottom: 4px; }
+    .features { list-style: none; padding: 0; margin: 24px 0 28px; display: grid; gap: 10px; }
+    .features li { display: flex; gap: 12px; color: var(--muted); font-size: 15px; }
+    .features li::before { content: '→'; color: var(--accent); flex-shrink: 0; }
+    .tags { display: flex; flex-wrap: wrap; gap: 8px; }
+    .tag { font-family: var(--mono); font-size: 11px; padding: 6px 10px; border-radius: 8px; border: 1px solid var(--border); color: var(--muted); }
+    .app-foot { margin-top: auto; padding-top: 28px; display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; }
+    .store-btn {
+      display: inline-flex; align-items: center; gap: 10px; background: var(--text); color: #0a0a0c;
+      padding: 10px 18px; border-radius: 12px; font-weight: 600; font-size: 14px; transition: transform .2s;
+    }
+    .store-btn:hover { transform: translateY(-2px); }
+    .store-btn svg { width: 20px; height: 20px; }
+
+    /* Projects */
+    .projects { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .proj { display: flex; flex-direction: column; min-height: 220px; }
+    .proj-head { display: flex; justify-content: space-between; align-items: start; margin-bottom: 14px; gap: 12px; }
+    .proj-head .num { font-family: var(--mono); font-size: 12px; color: var(--faint); }
+    .proj .arrow { width: 34px; height: 34px; border-radius: 50%; border: 1px solid var(--border); display: grid; place-items: center; color: var(--muted); transition: all .3s; flex-shrink: 0; }
+    .proj:hover .arrow { background: var(--accent); color: #140804; border-color: var(--accent); transform: rotate(-45deg); }
+    .proj .arrow svg { width: 16px; height: 16px; }
+    .proj .tags { margin-top: auto; padding-top: 20px; }
+    .proj h3 { font-size: 20px; }
+
+    /* Process */
+    .process { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; counter-reset: step; }
+    .step { padding-top: 70px; }
+    .step::after {
+      counter-increment: step; content: '0' counter(step);
+      position: absolute; top: 22px; left: 28px; font-family: var(--display); font-weight: 800; font-size: 34px;
+      color: transparent; -webkit-text-stroke: 1px var(--accent);
+    }
+
+    /* Experience */
+    .xp-layout { display: grid; grid-template-columns: 1.4fr 1fr; gap: 20px; }
+    .timeline { display: grid; gap: 16px; }
+    .xp { display: grid; grid-template-columns: 140px 1fr; gap: 24px; }
+    .xp-date { font-family: var(--mono); font-size: 12px; color: var(--muted); padding-top: 6px; }
+    .xp-date .now { color: #3ddc84; }
+    .xp h3 { font-size: 20px; margin-bottom: 2px; }
+    .xp .co { color: var(--accent); font-size: 14px; font-weight: 500; margin-bottom: 10px; }
+    .toolkit h3 { margin-bottom: 20px; }
+    .tk-group { margin-bottom: 22px; }
+    .tk-group:last-child { margin-bottom: 0; }
+    .tk-group h4 { font-family: var(--mono); font-size: 11px; color: var(--faint); text-transform: uppercase; letter-spacing: .14em; margin: 0 0 10px; font-weight: 500; }
+    .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+    .chip { font-size: 13px; padding: 7px 12px; border-radius: 999px; background: rgba(255, 255, 255, .05); border: 1px solid var(--border); }
+
+    /* Contact */
+    .contact {
+      position: relative; margin: 140px 0 0; padding: 90px 48px; border-radius: 32px; overflow: hidden; text-align: center;
+      background: linear-gradient(160deg, #1a0f0b 0%, #0f0d0d 60%);
+      border: 1px solid rgba(255, 106, 61, .25);
+    }
+    .contact::before {
+      content: ''; position: absolute; width: 700px; height: 700px; left: 50%; top: -420px; transform: translateX(-50%);
+      background: radial-gradient(circle, rgba(255, 106, 61, .35), transparent 65%); pointer-events: none;
+    }
+    .contact h2 { margin: 0 auto 18px; font-size: clamp(38px, 5.6vw, 72px); max-width: 820px; position: relative; }
+    .contact > p { color: var(--muted); max-width: 520px; margin: 0 auto 36px; position: relative; font-size: 18px; }
+    .contact .cta-row { justify-content: center; position: relative; }
+    .socials { display: flex; justify-content: center; gap: 12px; margin-top: 40px; position: relative; flex-wrap: wrap; }
+    .social { width: 48px; height: 48px; border-radius: 50%; border: 1px solid var(--border-strong); display: grid; place-items: center; color: var(--muted); transition: all .25s; }
+    .social:hover { color: var(--text); border-color: var(--accent); transform: translateY(-3px); }
+    .social svg { width: 20px; height: 20px; }
+
+    footer { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; padding: 40px 0 48px; color: var(--faint); font-size: 13px; }
+
+    /* Reveal */
+    .reveal { opacity: 0; transform: translateY(40px); transition: opacity 1s cubic-bezier(.2, .8, .2, 1), transform 1s cubic-bezier(.2, .8, .2, 1); }
+    .reveal.in { opacity: 1; transform: none; }
+    .hero-copy > * { animation: rise .9s cubic-bezier(.2, .8, .2, 1) both; }
+    .hero-copy > :nth-child(2) { animation-delay: .08s; }
+    .hero-copy > :nth-child(3) { animation-delay: .16s; }
+    .hero-copy > :nth-child(4) { animation-delay: .24s; }
+    .hero-copy > :nth-child(5) { animation-delay: .32s; }
+    .stage { animation: fade 1.4s ease .2s both; }
+    @keyframes rise { from { opacity: 0; transform: translateY(28px); } }
+    @keyframes fade { from { opacity: 0; } }
+
+    /* ---------- Responsive ---------- */
+    @media (max-width: 1024px) {
+      .services, .process { grid-template-columns: 1fr 1fr; }
+      .projects { grid-template-columns: 1fr 1fr; }
+      .xp-layout { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 860px) {
+      .nav-links { display: none; }
+      .hero { grid-template-columns: 1fr; min-height: auto; padding-top: 120px; gap: 0; }
+      .stage { height: 440px; order: -1; margin: -10px -24px 0; }
+      #scene { inset: 0; width: 100%; height: 100%; }
+      .floating-tag { display: none; }
+      .scroll-hint { display: none; }
+      .apps { grid-template-columns: 1fr; }
+      .app { min-height: 0; padding: 28px; }
+      .stats { gap: 28px; margin-top: 40px; }
+    }
+    @media (max-width: 600px) {
+      .wrap { padding: 0 16px; }
+      .services, .process, .projects { grid-template-columns: 1fr; }
+      .svc-icon { margin-bottom: 28px; }
+      .xp { grid-template-columns: 1fr; gap: 6px; }
+      section.block { padding-top: 96px; }
+      .contact { padding: 64px 22px; margin-top: 100px; border-radius: 24px; }
+      .stage { height: 400px; margin: -10px -16px 0; }
+      .cta-row .btn { flex: 1 1 auto; justify-content: center; }
+      .stat b { font-size: 30px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+      .reveal { opacity: 1; transform: none; }
+    }
+  </style>
 </head>
 <body>
-    <!-- Particle Network Canvas -->
-    <canvas id="particle-canvas"></canvas>
+  <div class="grain" aria-hidden="true"></div>
+  <div class="cursor-glow" aria-hidden="true"></div>
 
-    <div class="header">
-        TIRTH SHAH - PORTFOLIO
+  <nav class="nav">
+    <a href="#top" class="logo">tirth<span>.</span></a>
+    <div class="nav-links">
+      <a href="#experience">Experience</a>
+      <a href="#work">Apps</a>
+      <a href="#projects">Projects</a>
+      <a href="#services">Skills</a>
+    </div>
+    <a href="#contact" class="btn btn-primary btn-sm">Contact</a>
+  </nav>
+
+  <header class="wrap hero" id="top">
+    <div class="hero-copy">
+      <span class="eyebrow"><span class="pulse"></span>iOS Developer · Ahmedabad, IN</span>
+      <h1>I build iOS apps people <span class="hl">keep on their home screen.</span></h1>
+      <p class="lead">
+        Hi, I'm <strong>Tirth Shah</strong>, an iOS developer working in Swift, SwiftUI and UIKit. I take an app from idea to the
+        <strong>App Store</strong>: smooth UI, secure data and a launch that's ready for real users.
+      </p>
+      <div class="cta-row">
+        <a href="#work" class="btn btn-primary">
+          View my work
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+        <a href="#experience" class="btn btn-ghost">Experience</a>
+        <a href="https://drive.google.com/file/d/1lB0BUXp4PupAShpcDR9FibMjTykbuJvL/view?usp=sharing" target="_blank" rel="noopener noreferrer" class="btn btn-ghost">Resume</a>
+      </div>
+      <div class="stats">
+        <div class="stat"><b data-count="2">2</b><span>Apps live on the App Store</span></div>
+        <div class="stat"><b data-count="12" data-suffix="+">12+</b><span>iOS apps built</span></div>
+        <div class="stat"><b data-count="3">3</b><span>Industry internships</span></div>
+      </div>
     </div>
 
-    <main>
-        <!-- Hero Section -->
-        <section class="hero-section">
-            <div class="fade-in">
-                <h1 class="hero-title">Hi, I'm Tirth Shah</h1>
-                <p class="hero-subtitle">iOS Developer</p>
-                <p class="hero-description">
-                    Passionate about creating intuitive, high-performance iOS applications using Swift, SwiftUI, and UIKit. 
-                    I focus on building scalable, user-centric solutions that deliver exceptional experiences.
-                </p>
-                <div class="flex gap-4 justify-center">
-                    <a href="#projects" class="inline-block bg-indigo-600 text-white font-bold py-3 px-8 rounded-lg hover:bg-indigo-500 transition-colors duration-300">
-                        View Projects
-                    </a>
-                    <a href="index.html" class="inline-block bg-gray-700 text-white font-bold py-3 px-8 rounded-lg hover:bg-gray-600 transition-colors duration-300">
-                        Contact Card
-                    </a>
-                </div>
+    <div class="stage" aria-hidden="true">
+      <canvas id="scene"></canvas>
+      <div class="stage-fallback"><img src="MonthlyExpenseManaeger.png" alt=""></div>
+      <div class="floating-tag tag-1"><i>struct</i> App: View {}</div>
+      <div class="floating-tag tag-2">⌘B · Build Succeeded <i>✓</i></div>
+    </div>
+    <div class="scroll-hint">Scroll</div>
+  </header>
+
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee-track">
+      <span>Swift</span><span>SwiftUI</span><span>UIKit</span><span>Core Data</span><span>Firebase</span><span>MapKit</span><span>AVFoundation</span><span>PDFKit</span><span>Core Image</span><span>REST APIs</span><span>CocoaPods</span><span>Git</span>
+      <span>Swift</span><span>SwiftUI</span><span>UIKit</span><span>Core Data</span><span>Firebase</span><span>MapKit</span><span>AVFoundation</span><span>PDFKit</span><span>Core Image</span><span>REST APIs</span><span>CocoaPods</span><span>Git</span>
+    </div>
+  </div>
+
+  <main class="wrap">
+    <!-- Experience -->
+    <section class="block" id="experience">
+      <div class="sec-head reveal">
+        <div>
+          <div class="kicker">Experience</div>
+          <h2>Built in real teams, on real products.</h2>
+        </div>
+      </div>
+      <div class="xp-layout">
+        <div class="timeline">
+          <div class="card xp reveal">
+            <div class="xp-date">Jul 2025 — <span class="now">Present</span></div>
+            <div>
+              <h3>iOS Development Intern</h3>
+              <div class="co">Digital Auxilio Technologies</div>
+              <p>Designing and developing production iOS apps with SwiftUI and UIKit alongside cross-functional teams to ship seamless user experiences.</p>
             </div>
-        </section>
-
-        <!-- About Section -->
-        <section id="about" class="content-section">
-            <div class="max-w-4xl mx-auto glass-card p-8 md:p-12">
-                <h2 class="text-3xl md:text-4xl font-bold text-white mb-6 text-center">About Me</h2>
-                <p class="text-slate-300 mb-4">
-                    I am a highly motivated and detail-oriented entry-level iOS Developer with a passion for creating intuitive, high-performance, 
-                    and user-centric applications. My hands-on experience with Swift, SwiftUI, and UIKit is demonstrated through a portfolio of projects, 
-                    including a feature-rich eCommerce application. I am proficient in the entire application lifecycle, from API integration to managing 
-                    dependencies with CocoaPods, and have experience leveraging core Apple frameworks like AVFoundation. I am eager to contribute my skills 
-                    in building scalable and visually appealing iOS solutions to an innovative team and continue to grow within the dynamic iOS ecosystem.
-                </p>
+          </div>
+          <div class="card xp reveal">
+            <div class="xp-date">Nov 2024 — May 2025</div>
+            <div>
+              <h3>iOS Development Intern</h3>
+              <div class="co">Akash Technolabs</div>
+              <p>Built an eCommerce application and integrated third-party libraries via CocoaPods to extend app functionality.</p>
             </div>
-        </section>
-        
-        <!-- Skills Section -->
-        <section id="skills" class="content-section">
-            <div class="max-w-4xl mx-auto w-full">
-                <h2 class="text-3xl md:text-4xl font-bold text-white mb-12 text-center">Technical Skills</h2>
-                <div class="glass-card p-8">
-                    <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-                        <div>
-                            <h3 class="font-bold text-lg text-white mb-2">Languages</h3>
-                            <p class="text-slate-400">Swift</p>
-                            <p class="text-slate-400">SwiftUI</p>
-                            <p class="text-slate-400">UIKit</p>
-                            <p class="text-slate-400">Python</p>
-                        </div>
-                        <div>
-                            <h3 class="font-bold text-lg text-white mb-2">Frameworks</h3>
-                            <p class="text-slate-400">Django</p>
-                            <p class="text-slate-400">Flask</p>
-                            <p class="text-slate-400">MySQL</p>
-                        </div>
-                        <div>
-                            <h3 class="font-bold text-lg text-white mb-2">Architectural Patterns</h3>
-                            <p class="text-slate-400">MVC</p>
-                            <p class="text-slate-400">MVVM (Familiarity)</p>
-                        </div>
-                        <div>
-                            <h3 class="font-bold text-lg text-white mb-2">Core Concepts</h3>
-                            <p class="text-slate-400">API Integration (RESTful)</p>
-                            <p class="text-slate-400">User Authentication</p>
-                            <p class="text-slate-400">Application Lifecycle</p>
-                            <p class="text-slate-400">Local Data Persistence</p>
-                        </div>
-                        <div>
-                            <h3 class="font-bold text-lg text-white mb-2">Developer Tools</h3>
-                            <p class="text-slate-400">Xcode</p>
-                            <p class="text-slate-400">CocoaPods</p>
-                            <p class="text-slate-400">Postman</p>
-                        </div>
-                        <div>
-                            <h3 class="font-bold text-lg text-white mb-2">Version Control</h3>
-                            <p class="text-slate-400">Xcode</p>
-                            <p class="text-slate-400">Git</p>
-                            <p class="text-slate-400">GitHub</p>
-                        </div>
-                    </div>
-                </div>
+          </div>
+          <div class="card xp reveal">
+            <div class="xp-date">Jun 2022 — Mar 2023</div>
+            <div>
+              <h3>Python Web Developer Intern</h3>
+              <div class="co">Axisray</div>
+              <p>Developed Django &amp; Flask web apps, managed databases and wrote efficient SQL, which gives me a strong backend foundation.</p>
             </div>
-        </section>
+          </div>
+        </div>
+        <div class="card toolkit reveal">
+          <h3>Toolkit</h3>
+          <div class="tk-group"><h4>Languages &amp; UI</h4><div class="chips"><span class="chip">Swift</span><span class="chip">SwiftUI</span><span class="chip">UIKit</span><span class="chip">Python</span></div></div>
+          <div class="tk-group"><h4>Apple frameworks</h4><div class="chips"><span class="chip">Core Data</span><span class="chip">AVFoundation</span><span class="chip">MapKit</span><span class="chip">PDFKit</span><span class="chip">Core Image</span></div></div>
+          <div class="tk-group"><h4>Backend</h4><div class="chips"><span class="chip">Firebase</span><span class="chip">REST APIs</span><span class="chip">Django</span><span class="chip">Flask</span><span class="chip">MySQL</span></div></div>
+          <div class="tk-group"><h4>Architecture</h4><div class="chips"><span class="chip">MVC</span><span class="chip">MVVM</span></div></div>
+          <div class="tk-group"><h4>Tools</h4><div class="chips"><span class="chip">Xcode</span><span class="chip">CocoaPods</span><span class="chip">Postman</span><span class="chip">Git &amp; GitHub</span></div></div>
+        </div>
+      </div>
+    </section>
 
-        <!-- Experience Section -->
-        <section id="experience" class="content-section">
-            <div class="max-w-4xl mx-auto w-full">
-                <h2 class="text-3xl md:text-4xl font-bold text-white mb-12 text-center">Internships & Training</h2>
-                <div class="space-y-8">
-                    <div class="glass-card p-6">
-                        <h3 class="text-xl font-bold text-white">iOS Development Intern</h3>
-                        <p class="text-indigo-300 font-medium mb-2">Digital Auxilio Technologies | July 2025 - OnGoing</p>
-                        <p class="text-slate-400">Designed and developed iOS applications using SwiftUI and UIKit, collaborating with 
-                            cross-functional teams to create seamless user experiences.</p>
-                    </div>
-                    <div class="glass-card p-6">
-                        <h3 class="text-xl font-bold text-white">iOS Development Intern</h3>
-                        <p class="text-indigo-300 font-medium mb-2">Akash Technolabs | Nov 2024 - May 2025</p>
-                        <p class="text-slate-400">Integrated third-party Libraries and frameworks using CocoaPods for enhanced app functionality and 
-                            worked on an eCommerce application project.</p>
-                    </div>
-                    <div class="glass-card p-6">
-                        <h3 class="text-xl font-bold text-white">Python Web Developer Intern</h3>
-                        <p class="text-indigo-300 font-medium mb-2">Axisray | Jun 2022 - Mar 2023</p>
-                        <p class="text-slate-400">Developed and maintained web applications using Django and Flask frameworks, managed databases, 
-                            and wrote efficient SQL queries.</p>
-                    </div>
-                </div>
+    <!-- Featured apps -->
+    <section class="block" id="work">
+      <div class="sec-head reveal">
+        <div>
+          <div class="kicker">Shipped &amp; live</div>
+          <h2>Apps you can download today.</h2>
+        </div>
+        <p>Designed, built and published by me, and used by real people on the App Store.</p>
+      </div>
+      <div class="apps">
+        <a class="card app reveal" data-tilt href="https://apps.apple.com/in/app/daily-expense-planner/id6756657957" target="_blank" rel="noopener noreferrer">
+          <div class="app-top lift">
+            <img class="app-icon" src="MonthlyExpenseManaeger.png" alt="Daily Expense Planner app icon">
+            <div>
+              <span class="badge">Live on App Store</span>
+              <h3>Daily Expense Planner</h3>
             </div>
-        </section>
-
-        <section id="appstore" class="content-section">
-            <div class="max-w-6xl mx-auto">
-                <h2 class="text-3xl md:text-4xl font-bold text-white mb-4 text-center">Apps on App Store</h2>
-                <p class="text-center text-slate-400 mb-12 max-w-2xl mx-auto">
-                    Live applications available for download on the Apple App Store
-                </p>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-                    
-                    <a href="https://apps.apple.com/in/app/quiz-mirror/id1523165414" target="_blank" rel="noopener noreferrer" class="project-link block">
-                        <div class="glass-card p-8 h-full hover:border-indigo-500 transition-all duration-300">
-                            <div class="flex items-start gap-4 mb-4">
-                                <!-- Replace 'quiz-mirror-icon.png' with your actual app icon image URL -->
-                                <img src="1024.png" alt="Quiz Mirror App Icon" class="app-icon flex-shrink-0">
-                                <div class="flex-1">
-                                    <h3 class="text-2xl font-bold text-white mb-2">Quiz Mirror</h3>
-                                    <div class="flex items-center gap-2 text-sm text-indigo-400 mb-3">
-                                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                                            <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z"></path>
-                                        </svg>
-                                        <span>Available on App Store</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <p class="text-slate-300 mb-4 leading-relaxed">
-                                A comprehensive quiz application built with SwiftUI featuring secure user authentication and complete profile customization.Users can update their profile picture, personal information, and track their quiz performance with detailed marks and scoring analytics.The app includes a free coin reward system where users earn coins for completing quizzes, daily logins, and achievements.Features customizable quiz categories, adjustable timer settings,Saved Question and bookmarking favorite questions.
-                            </p>
-                            <div class="flex flex-wrap gap-2 mb-4">
-                                <span class="px-3 py-1 bg-indigo-900/50 text-indigo-300 rounded-full text-xs font-medium">SwiftUI</span>
-                                <span class="px-3 py-1 bg-indigo-900/50 text-indigo-300 rounded-full text-xs font-medium">Firebase</span>
-                                <span class="px-3 py-1 bg-indigo-900/50 text-indigo-300 rounded-full text-xs font-medium">Core Data</span>
-                            </div>
-                            <div class="flex items-center text-indigo-400 font-semibold group-hover:text-indigo-300">
-                                <span>Download on App Store</span>
-                                <svg class="w-5 h-5 ml-2 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
-                                </svg>
-                            </div>
-                        </div>
-                    </a>
-
-                    <a href="https://apps.apple.com/in/app/daily-expense-planner/id6756657957" target="_blank" rel="noopener noreferrer" class="project-link block">
-                        <div class="glass-card p-8 h-full hover:border-indigo-500 transition-all duration-300">
-                            <div class="flex items-start gap-4 mb-4">
-                                <img src="MonthlyExpenseManaeger.png" alt="Daily Expense Planner App Icon" class="app-icon flex-shrink-0">
-                                
-                                <div class="flex-1">
-                                    <h3 class="text-2xl font-bold text-white mb-2">Daily Expense Planner</h3>
-                                    <div class="flex items-center gap-2 text-sm text-indigo-400 mb-3">
-                                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                                            <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z"></path>
-                                        </svg>
-                                        <span>Available on App Store</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <p class="text-slate-300 mb-4 leading-relaxed">
-                                A comprehensive expense tracking application built with SwiftUI featuring advanced data management.Users can manage multiple user profiles, track daily expenses with complete privacy using biometric authentication and category-level password protection. The app includes automatic backup functionality similar to WhatsApp, ensuring your financial data is always safe and synchronized. Features seamless import/export capabilities for financial data, interactive graphs and visual analytics, advanced filtering options by category, day, week, month, and year. Users can lock sensitive expense categories with individual passwords, view spending trends through detailed charts, and customize their expense tracking experience with personalized categories and budget alerts
-                            </p>
-                            <div class="flex flex-wrap gap-2 mb-4">
-                                <span class="px-3 py-1 bg-indigo-900/50 text-indigo-300 rounded-full text-xs font-medium">SwiftUI</span>
-                                <span class="px-3 py-1 bg-indigo-900/50 text-indigo-300 rounded-full text-xs font-medium">Firebase</span>
-                                <span class="px-3 py-1 bg-indigo-900/50 text-indigo-300 rounded-full text-xs font-medium">Core Data</span>
-                            </div>
-                            <div class="flex items-center text-indigo-400 font-semibold group-hover:text-indigo-300">
-                                <span>Download on App Store</span>
-                                <svg class="w-5 h-5 ml-2 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
-                                </svg>
-                            </div>
-                        </div>
-                    </a>
-
-                </div>
+          </div>
+          <p>A private, secure way to track spending across multiple profiles, with charts that make your money habits easy to see.</p>
+          <ul class="features">
+            <li>Face ID / Touch ID plus per-category password locks</li>
+            <li>Automatic WhatsApp-style backup, import &amp; export</li>
+            <li>Interactive charts filtered by day, week, month and year</li>
+            <li>Custom categories and budget alerts</li>
+          </ul>
+          <div class="app-foot">
+            <div class="tags"><span class="tag">SwiftUI</span><span class="tag">Firebase</span><span class="tag">Core Data</span></div>
+            <span class="store-btn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.4 12.6c0-2.4 2-3.6 2.1-3.7-1.1-1.7-2.9-1.9-3.5-1.9-1.5-.2-2.9.9-3.7.9-.8 0-1.9-.9-3.2-.8-1.6 0-3.1 1-4 2.4-1.7 3-.4 7.4 1.2 9.8.8 1.2 1.8 2.5 3 2.4 1.2 0 1.7-.8 3.2-.8s1.9.8 3.2.8c1.3 0 2.2-1.2 3-2.4.9-1.4 1.3-2.7 1.3-2.8 0 0-2.6-1-2.6-3.9zM14 5.5c.7-.8 1.1-1.9 1-3-1 0-2.1.7-2.8 1.5-.6.7-1.2 1.8-1 2.9 1 .1 2.1-.6 2.8-1.4z"/></svg>Download</span>
+          </div>
+        </a>
+        <a class="card app reveal" data-tilt href="https://apps.apple.com/in/app/quiz-mirror/id1523165414" target="_blank" rel="noopener noreferrer">
+          <div class="app-top lift">
+            <img class="app-icon" src="1024.png" alt="Quiz Mirror app icon">
+            <div>
+              <span class="badge">Live on App Store</span>
+              <h3>Quiz Mirror</h3>
             </div>
-        </section>
-        <!-- Projects Section -->
-        <section id="projects" class="content-section">
-            <div class="max-w-6xl mx-auto">
-                <h2 class="text-3xl md:text-4xl font-bold text-white mb-12 text-center">My Projects</h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    
-                    <a href="https://github.com/tirth615/ChatLive-Using-UIKit" target="_blank" rel="noopener noreferrer" class="project-link block">
-                        <div class="glass-card p-6 h-full">
-                            <h3 class="text-xl font-bold text-white mb-2">ChatLive</h3>
-                            <p class="text-slate-400 text-sm">Real-time chat application using Swift, SwiftUI, and UIKit, featuring messaging, 
-                                user authentication, and media sharing.</p>
-                        </div>
-                    </a>
+          </div>
+          <p>A quiz app built to keep people coming back, with rewards, progress tracking and quizzes you can customise.</p>
+          <ul class="features">
+            <li>Secure sign-in with full profile customisation</li>
+            <li>Coin rewards for quizzes, daily logins &amp; achievements</li>
+            <li>Detailed score analytics and performance history</li>
+            <li>Custom categories, timers, saved &amp; bookmarked questions</li>
+          </ul>
+          <div class="app-foot">
+            <div class="tags"><span class="tag">SwiftUI</span><span class="tag">Firebase</span><span class="tag">Core Data</span></div>
+            <span class="store-btn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.4 12.6c0-2.4 2-3.6 2.1-3.7-1.1-1.7-2.9-1.9-3.5-1.9-1.5-.2-2.9.9-3.7.9-.8 0-1.9-.9-3.2-.8-1.6 0-3.1 1-4 2.4-1.7 3-.4 7.4 1.2 9.8.8 1.2 1.8 2.5 3 2.4 1.2 0 1.7-.8 3.2-.8s1.9.8 3.2.8c1.3 0 2.2-1.2 3-2.4.9-1.4 1.3-2.7 1.3-2.8 0 0-2.6-1-2.6-3.9zM14 5.5c.7-.8 1.1-1.9 1-3-1 0-2.1.7-2.8 1.5-.6.7-1.2 1.8-1 2.9 1 .1 2.1-.6 2.8-1.4z"/></svg>Download</span>
+          </div>
+        </a>
+      </div>
+    </section>
 
-                    <div class="glass-card p-6 h-full">
-                        <h3 class="text-xl font-bold text-white mb-2">E-commerce App</h3>
-                        <p class="text-slate-400 text-sm">An e-commerce application using Swift, SwiftUI, and UIKit, focusing on creating a 
-                            functional and visually appealing mobile shopping experience.</p>
-                    </div>
+    <!-- Projects -->
+    <section class="block" id="projects">
+      <div class="sec-head reveal">
+        <div>
+          <div class="kicker">More builds</div>
+          <h2>Projects across the Apple toolkit.</h2>
+        </div>
+        <p>Chat, maps, media, billing and security. Each project covers a different part of iOS development.</p>
+      </div>
+      <div class="projects" id="project-grid"></div>
+    </section>
 
-                    <a href="https://github.com/tirth615/QrCodeGenerate-Scanner" target="_blank" rel="noopener noreferrer" class="project-link block">
-                        <div class="glass-card p-6 h-full">
-                            <h3 class="text-xl font-bold text-white mb-2">QR Code Generator & Scanner</h3>
-                            <p class="text-slate-400 text-sm">A utility app using Swift, UIKit, and CoreImage for real-time QR code scanning and 
-                                dynamic QR code generation from user input.</p>
-                        </div>
-                    </a>
 
-                    <a href="https://github.com/tirth615/BillingApp" target="_blank" rel="noopener noreferrer" class="project-link block">
-                        <div class="glass-card p-6 h-full">
-                            <h3 class="text-xl font-bold text-white mb-2">Billing App</h3>
-                            <p class="text-slate-400 text-sm">A full-featured billing and invoicing application using Swift, UIKit, and 
-                                Firebase for data handling and PDF export with PDFKit.</p>
-                        </div>
-                    </a>
 
-                    <a href="https://github.com/tirth615/Map-Kit-Using-UIKit" target="_blank" rel="noopener noreferrer" class="project-link block">
-                        <div class="glass-card p-6 h-full">
-                            <h3 class="text-xl font-bold text-white mb-2">MapKit App</h3>
-                            <p class="text-slate-400 text-sm">Interactive mapping app using MapKit and CoreLocation to view current location, 
-                                drop pins, and generate routes with MKDirections.</p>
-                        </div>
-                    </a>
+    <!-- Services -->
+    <section class="block" id="services">
+      <div class="sec-head reveal">
+        <div>
+          <div class="kicker">What I do</div>
+          <h2>From first sketch to App Store launch.</h2>
+        </div>
+        <p>I work across the whole iOS app lifecycle: interface, data, integrations and release.</p>
+      </div>
+      <div class="services">
+        <div class="card reveal" data-tilt>
+          <div class="lift">
+            <div class="svc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2" width="12" height="20" rx="3"/><path d="M11 18h2"/></svg></div>
+            <h3>Native iOS apps</h3>
+            <p>Fast, reliable iPhone apps in Swift that look and feel at home on iOS.</p>
+          </div>
+        </div>
+        <div class="card reveal" data-tilt>
+          <div class="lift">
+            <div class="svc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z"/><path d="M12 12l8-4.5M12 12v9M12 12L4 7.5"/></svg></div>
+            <h3>SwiftUI interfaces</h3>
+            <p>Polished, animated screens with clean architecture that's easy to extend.</p>
+          </div>
+        </div>
+        <div class="card reveal" data-tilt>
+          <div class="lift">
+            <div class="svc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v6c0 1.7 3.6 3 8 3s8-1.3 8-3V5M4 11v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6"/></svg></div>
+            <h3>Backend &amp; data</h3>
+            <p>REST APIs, Firebase, authentication, Core Data, offline storage and backups.</p>
+          </div>
+        </div>
+        <div class="card reveal" data-tilt>
+          <div class="lift">
+            <div class="svc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 15c-1.5 1.3-2 5-2 5s3.7-.5 5-2c.7-.8.7-2.1-.1-2.9-.8-.8-2.1-.8-2.9-.1z"/><path d="M12 15l-3-3a22 22 0 012-3.9A12.9 12.9 0 0122 2c0 2.7-.8 7.5-6 11a22 22 0 01-4 2z"/><path d="M9 12H4s.6-3 2-4c1.6-1.1 5 0 5 0M12 15v5s3-.6 4-2c1.1-1.6 0-5 0-5"/></svg></div>
+            <h3>App Store launch</h3>
+            <p>Signing, TestFlight, store listing and review. I've shipped two apps myself.</p>
+          </div>
+        </div>
+      </div>
+    </section>
 
-                    <a href="https://github.com/Tirth615/AVFoundation_task.git" target="_blank" rel="noopener noreferrer" class="project-link block">
-                        <div class="glass-card p-6 h-full">
-                            <h3 class="text-xl font-bold text-white mb-2">AVFoundation Music Player</h3>
-                            <p class="text-slate-400 text-sm">iOS music player using AVFoundation for local and streamed audio, 
-                                with background playback and lock screen media controls.</p>
-                        </div>
-                    </a>
-                    
-                    <a href="https://github.com/tirth615/Swift-Password-Manager" target="_blank" rel="noopener noreferrer" class="project-link block">
-                        <div class="glass-card p-6 h-full">
-                            <h3 class="text-xl font-bold text-white mb-2">Swift-Password-Manager</h3>
-                            <p class="text-slate-400 text-sm">A secure iOS app for managing user credentials, built with Swift and UIKit. 
-                                It uses Core Data for secure local storage and allows users to easily perform create, read, update, and delete operations on their passwords.</p>
-                        </div>
-                    </a>
+    <!-- Contact -->
+    <section class="contact reveal" id="contact">
+      <div class="kicker" style="position:relative">Contact</div>
+      <h2>Let's <span class="hl" style="background:linear-gradient(100deg,var(--accent),var(--accent-2));-webkit-background-clip:text;background-clip:text;color:transparent">connect.</span></h2>
+      <p>Want to talk about my work, a role or anything iOS? Reach out any time.</p>
+      <div class="cta-row">
+        <a href="mailto:shahtirth615@gmail.com" class="btn btn-primary">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>
+          shahtirth615@gmail.com
+        </a>
+        <a href="https://wa.me/919429562246" target="_blank" rel="noopener noreferrer" class="btn btn-ghost">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.1-1.8-.9-2-1s-.5-.1-.7.1c-.2.3-.8 1-.9 1.2-.2.2-.3.2-.6.1-.3-.1-1.3-.5-2.4-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6l.4-.5c.2-.2.2-.3.3-.5.1-.2 0-.4 0-.5l-.9-2.2c-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.1.2 2.1 3.2 5.1 4.5.7.3 1.3.5 1.7.6.7.2 1.4.2 1.9.1.6-.1 1.8-.7 2-1.4.2-.7.2-1.3.2-1.4-.1-.2-.3-.3-.6-.4zM12 2a10 10 0 00-8.6 15.1L2 22l5-1.3A10 10 0 1012 2z"/></svg>
+          WhatsApp
+        </a>
+        <a href="https://drive.google.com/file/d/1lB0BUXp4PupAShpcDR9FibMjTykbuJvL/view?usp=sharing" target="_blank" rel="noopener noreferrer" class="btn btn-ghost">Resume</a>
+      </div>
+      <div class="socials">
+        <a class="social" href="https://www.linkedin.com/in/tirthshah615" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5a2.5 2.5 0 110 5 2.5 2.5 0 010-5zM3 9.5h4V21H3zM9.5 9.5h3.8v1.6h.1c.5-1 1.8-2 3.8-2 4 0 4.8 2.6 4.8 6V21h-4v-5.1c0-1.2 0-2.8-1.7-2.8s-2 1.3-2 2.7V21h-4z"/></svg></a>
+        <a class="social" href="https://github.com/tirth615" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 00-3.2 19.5c.5.1.7-.2.7-.5v-1.7c-2.8.6-3.4-1.3-3.4-1.3-.4-1.2-1.1-1.5-1.1-1.5-.9-.6.1-.6.1-.6 1 .1 1.5 1 1.5 1 .9 1.5 2.4 1.1 2.9.8.1-.6.4-1.1.6-1.3-2.2-.3-4.6-1.1-4.6-5 0-1.1.4-2 1-2.7-.1-.3-.4-1.3.1-2.7 0 0 .8-.3 2.8 1a9.6 9.6 0 015 0c1.9-1.3 2.8-1 2.8-1 .5 1.4.2 2.4.1 2.7.6.7 1 1.6 1 2.7 0 3.9-2.3 4.7-4.6 5 .4.3.7.9.7 1.9V21c0 .3.2.6.7.5A10 10 0 0012 2z"/></svg></a>
+        <a class="social" href="https://www.instagram.com/tirthshah615/" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg></a>
+        <a class="social" href="tel:+919510374575" aria-label="Call"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 01-2.2 2 19.8 19.8 0 01-8.6-3.1 19.5 19.5 0 01-6-6A19.8 19.8 0 012.1 4.2 2 2 0 014.1 2h3a2 2 0 012 1.7c.1.9.4 1.8.7 2.7a2 2 0 01-.5 2.1L8 9.8a16 16 0 006 6l1.3-1.3a2 2 0 012.1-.5c.9.3 1.8.6 2.7.7a2 2 0 011.7 2z"/></svg></a>
+        <a class="social" href="index.html" aria-label="Digital contact card"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><circle cx="8" cy="12" r="2"/><path d="M14 10h4M14 14h4"/></svg></a>
+      </div>
+    </section>
 
-                    <a href="https://github.com/Tirth615/Habit-Tracker-Using-StoryBoard.git" target="_blank" rel="noopener noreferrer" class="project-link block">
-                        <div class="glass-card p-6 h-full">
-                            <h3 class="text-xl font-bold text-white mb-2">Habit Tracker App</h3>
-                            <p class="text-slate-400 text-sm">A motivational iOS app to track daily habits and maintain streaks, developed using UIKit. 
-                                The app leverages Core Data to persistently store user progress and provide a visual overview of their consistency.</p>
-                        </div>
-                    </a>
-                    
-                    <a href="https://github.com/tirth615/Income-Expense.git" target="_blank" rel="noopener noreferrer" class="project-link block">
-                        <div class="glass-card p-6 h-full">
-                            <h3 class="text-xl font-bold text-white mb-2">Income-Expense App</h3>
-                            <p class="text-slate-400 text-sm">A straightforward financial tracking app for iOS to log and categorize income and expenses. 
-                                Built with UIKit, it provides users with a clear summary of their financial balance to help manage their budget.</p>
-                        </div>
-                    </a>
-                    
-                    <a href="https://github.com/tirth615/ToDoList-Storyboard.git" target="_blank" rel="noopener noreferrer" class="project-link block">
-                        <div class="glass-card p-6 h-full">
-                            <h3 class="text-xl font-bold text-white mb-2">ToDoList-SwiftUI</h3>
-                            <p class="text-slate-400 text-sm">An elegant and modern to-do list application built entirely with SwiftUI. 
-                                This project showcases proficiency in declarative UI, state management, and building responsive user interfaces.</p>
-                        </div>
-                    </a>
-                    
-                    <a href="https://github.com/Tirth615/Shut-the-box.git" target="_blank" rel="noopener noreferrer" class="project-link block">
-                        <div class="glass-card p-6 h-full">
-                            <h3 class="text-xl font-bold text-white mb-2">Shut-the-box</h3>
-                            <p class="text-slate-400 text-sm">An interactive iOS implementation of the classic "Shut the Box" dice game. 
-                                It features complete game logic and an engaging user interface built to create a fun and playable experience.</p>
-                        </div>
-                    </a>
+    <footer>
+      <span>© <span id="year"></span> Tirth Shah. Designed &amp; built by hand.</span>
+      <a href="#top">Back to top ↑</a>
+    </footer>
+  </main>
 
-                    <a href="https://github.com/tirth615/Calculator_IOS" target="_blank" rel="noopener noreferrer" class="project-link block">
-                        <div class="glass-card p-6 h-full">
-                            <h3 class="text-xl font-bold text-white mb-2">Calculator_IOS</h3>
-                            <p class="text-slate-400 text-sm">A functional calculator app featuring a clean UI and logic for all basic mathematical operations. 
-                                This project demonstrates strong fundamentals in UI design and user input handling in an iOS environment.</p>
-                        </div>
-                    </a>
-                </div>
-            </div>
-        </section>
-        
+  <script>
+    // ---------- Projects data ----------
+    const projects = [
+      { t: 'ChatLive', d: 'Real-time chat with messaging, user authentication and media sharing.', tags: ['UIKit', 'SwiftUI', 'Realtime'], url: 'https://github.com/tirth615/ChatLive-Using-UIKit' },
+      { t: 'E-commerce App', d: 'A complete mobile shopping experience, from product browsing to cart and checkout.', tags: ['Swift', 'UIKit', 'CocoaPods'] },
+      { t: 'Billing App', d: 'Invoicing with Firebase-backed data and polished PDF export using PDFKit.', tags: ['Firebase', 'PDFKit'], url: 'https://github.com/tirth615/BillingApp' },
+      { t: 'MapKit App', d: 'Live location, dropped pins and turn-by-turn routes with MKDirections.', tags: ['MapKit', 'CoreLocation'], url: 'https://github.com/tirth615/Map-Kit-Using-UIKit' },
+      { t: 'Music Player', d: 'Local & streamed audio with background playback and lock-screen controls.', tags: ['AVFoundation'], url: 'https://github.com/Tirth615/AVFoundation_task.git' },
+      { t: 'QR Generator & Scanner', d: 'Real-time QR scanning and instant code generation from any input.', tags: ['Core Image', 'UIKit'], url: 'https://github.com/tirth615/QrCodeGenerate-Scanner' },
+      { t: 'Password Manager', d: 'Secure on-device credential storage with full create, edit and delete.', tags: ['Core Data', 'Security'], url: 'https://github.com/tirth615/Swift-Password-Manager' },
+      { t: 'Habit Tracker', d: 'Daily habits, streaks and a visual overview of your consistency.', tags: ['UIKit', 'Core Data'], url: 'https://github.com/Tirth615/Habit-Tracker-Using-StoryBoard.git' },
+      { t: 'Income & Expense', d: 'Log and categorise money in and out with a clear balance summary.', tags: ['UIKit'], url: 'https://github.com/tirth615/Income-Expense.git' },
+      { t: 'ToDo List', d: 'A modern task manager showing declarative UI and state management.', tags: ['SwiftUI'], url: 'https://github.com/tirth615/ToDoList-Storyboard.git' },
+      { t: 'Shut the Box', d: 'The classic dice game, with complete game logic and playful UI.', tags: ['Game', 'UIKit'], url: 'https://github.com/Tirth615/Shut-the-box.git' },
+      { t: 'Calculator', d: 'A clean calculator with solid input handling and layout fundamentals.', tags: ['UIKit'], url: 'https://github.com/tirth615/Calculator_IOS' }
+    ];
+    const arrow = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
+    document.getElementById('project-grid').innerHTML = projects.map((p, i) => {
+      const tag = p.url ? 'a' : 'div';
+      const attrs = p.url ? ` href="${p.url}" target="_blank" rel="noopener noreferrer"` : '';
+      return `<${tag} class="card proj reveal" data-tilt${attrs}>
+        <div class="proj-head"><span class="num">${String(i + 1).padStart(2, '0')}</span>${p.url ? `<span class="arrow">${arrow}</span>` : ''}</div>
+        <h3>${p.t}</h3><p>${p.d}</p>
+        <div class="tags">${p.tags.map(t => `<span class="tag">${t}</span>`).join('')}</div>
+      </${tag}>`;
+    }).join('');
+    document.getElementById('year').textContent = new Date().getFullYear();
 
-        <!-- Contact Section -->
-        <section id="contact" class="content-section">
-            <div class="max-w-2xl mx-auto glass-card p-8 md:p-12 text-center">
-                <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">Get In Touch</h2>
-                <p class="text-slate-300 mb-8">
-                    I'm seeking new opportunities to contribute to an innovative team where I can apply my iOS skills and grow as a developer.
-                </p>
-                <div class="flex gap-4 justify-center">
-                    <a href="https://drive.google.com/file/d/1lB0BUXp4PupAShpcDR9FibMjTykbuJvL/view?usp=sharing" target="_blank" rel="noopener noreferrer" 
-                    class="inline-block bg-gray-700 text-white font-bold py-3 px-8 rounded-lg hover:bg-gray-600 transition-colors duration-300">
-                        View Resume
-                    </a>
-                    <a href="mailto:shahtirth615@gmail.com" class="inline-block bg-indigo-600 text-white font-bold py-3 px-8 rounded-lg hover:bg-indigo-500 transition-colors duration-300">
-                        Contact Me
-                    </a>
-                </div>
-                <div class="flex justify-center space-x-6 mt-8">
-                    <a href="https://linkedin.com/in/tirthshah615" target="_blank" class="text-slate-400 hover:text-white"><i data-feather="linkedin" class="w-8 h-8"></i></a>
-                    <a href="https://github.com/tirth615" target="_blank" class="text-slate-400 hover:text-white"><i data-feather="github" class="w-8 h-8"></i></a>
-                </div>
-            </div>
-        </section>
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const finePointer = window.matchMedia('(pointer: fine)').matches;
 
-    </main>
+    // ---------- Reveal on scroll ----------
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (!e.isIntersecting) return;
+        const siblings = [...e.target.parentElement.children].filter(c => c.classList.contains('reveal'));
+        e.target.style.transitionDelay = (Math.max(0, siblings.indexOf(e.target)) % 4) * 80 + 'ms';
+        e.target.classList.add('in');
+        io.unobserve(e.target);
+      });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 
-    <script>
-        // Initialize Feather Icons
-        feather.replace();
-
-        // Particle Network Animation
-        const canvas = document.getElementById('particle-canvas');
-        const ctx = canvas.getContext('2d');
-        let width, height, particles;
-        let mouse = { x: null, y: null };
-
-        function init() {
-            width = canvas.width = window.innerWidth;
-            height = canvas.height = window.innerHeight;
-            particles = [];
-            const particleCount = (width < 768) ? 60 : 100;
-            for (let i = 0; i < particleCount; i++) {
-                particles.push(new Particle());
-            }
-        }
-
-        class Particle {
-            constructor() {
-                this.x = Math.random() * width;
-                this.y = Math.random() * height;
-                this.vx = (Math.random() - 0.5) * 0.8;
-                this.vy = (Math.random() - 0.5) * 0.8;
-                this.radius = 2;
-            }
-
-            update() {
-                this.x += this.vx + 0.05;
-                this.y += this.vy + 0.05;
-
-                if (this.x < 0 || this.x > width) this.vx *= -1;
-                if (this.y < 0 || this.y > height) this.vy *= -1;
-
-                if (mouse.x) {
-                    let dx = this.x - mouse.x;
-                    let dy = this.y - mouse.y;
-                    let distance = Math.sqrt(dx * dx + dy * dy);
-                    if (distance < 200) {
-                        this.x += dx / distance * 2;
-                        this.y += dy / distance * 2;
-                    }
-                }
-            }
-
-            draw() {
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-                ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
-                ctx.fill();
-            }
-        }
-
-        function animate() {
-            ctx.clearRect(0, 0, width, height);
-            
-            particles.forEach(p => {
-                p.update();
-                p.draw();
-            });
-
-            connectParticles();
-            requestAnimationFrame(animate);
-        }
-
-        function connectParticles() {
-            for (let i = 0; i < particles.length; i++) {
-                for (let j = i; j < particles.length; j++) {
-                    let dx = particles[i].x - particles[j].x;
-                    let dy = particles[i].y - particles[j].y;
-                    let distance = Math.sqrt(dx * dx + dy * dy);
-
-                    const connectDistance = (width < 768) ? 120 : 150;
-                    if (distance < connectDistance) {
-                        ctx.beginPath();
-                        ctx.moveTo(particles[i].x, particles[i].y);
-                        ctx.lineTo(particles[j].x, particles[j].y);
-                        ctx.strokeStyle = `rgba(129, 140, 248, ${1 - distance / connectDistance})`;
-                        ctx.lineWidth = 0.8;
-                        ctx.stroke();
-                    }
-                }
-            }
-        }
-
-        window.addEventListener('resize', () => {
-            init();
+    // ---------- 3D tilt cards ----------
+    if (finePointer && !reduceMotion) {
+      document.querySelectorAll('[data-tilt]').forEach(card => {
+        card.addEventListener('pointermove', e => {
+          const r = card.getBoundingClientRect();
+          const x = (e.clientX - r.left) / r.width, y = (e.clientY - r.top) / r.height;
+          card.style.setProperty('--mx', x * 100 + '%');
+          card.style.setProperty('--my', y * 100 + '%');
+          card.style.transitionDelay = '0ms';
+          card.style.transform = `perspective(900px) rotateX(${(0.5 - y) * 10}deg) rotateY(${(x - 0.5) * 12}deg) translateZ(0)`;
         });
+        card.addEventListener('pointerleave', () => { card.style.transform = ''; });
+      });
+      const glow = document.querySelector('.cursor-glow');
+      window.addEventListener('pointermove', e => {
+        glow.style.opacity = 1;
+        glow.style.left = e.clientX + 'px';
+        glow.style.top = e.clientY + 'px';
+      });
+    }
 
-        window.addEventListener('mousemove', (e) => {
-            mouse.x = e.clientX;
-            mouse.y = e.clientY;
-        });
-        
-        window.addEventListener('mouseout', () => {
-            mouse.x = null;
-            mouse.y = null;
-        });
+    // ---------- Count-up stats ----------
+    if (!reduceMotion) {
+      document.querySelectorAll('[data-count]').forEach(el => {
+        const end = +el.dataset.count, suffix = el.dataset.suffix || '';
+        const t0 = performance.now() + 400;
+        const tick = now => {
+          const p = Math.min(1, Math.max(0, (now - t0) / 1400));
+          el.textContent = Math.round(end * (1 - Math.pow(1 - p, 3))) + (p === 1 ? suffix : '');
+          if (p < 1) requestAnimationFrame(tick);
+        };
+        el.textContent = '0';
+        requestAnimationFrame(tick);
+      });
+    }
 
-        init();
-        animate();
+    // ---------- Three.js hero scene ----------
+    window.addEventListener('load', () => {
+      const canvas = document.getElementById('scene');
+      if (!window.THREE || !canvas.getContext('webgl')) { document.documentElement.classList.add('no-webgl'); return; }
 
-        // Smooth scroll
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
-            });
+      const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      renderer.outputEncoding = THREE.sRGBEncoding;
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(32, 1, 0.1, 100);
+      camera.position.set(0, 0, 11);
+
+      // Lights
+      scene.add(new THREE.AmbientLight(0xffffff, 0.35));
+      const key = new THREE.DirectionalLight(0xffffff, 0.9); key.position.set(3, 4, 6); scene.add(key);
+      const warm = new THREE.PointLight(0xff6a3d, 2.4, 20); warm.position.set(-3, -1, 3); scene.add(warm);
+      const cool = new THREE.PointLight(0x6a7bff, 1.6, 20); cool.position.set(4, 2, -2); scene.add(cool);
+
+      // ---- Phone ----
+      const W = 1.7, H = 3.5, R = 0.28, D = 0.16;
+      const roundedRect = (w, h, r) => {
+        const s = new THREE.Shape(), x = -w / 2, y = -h / 2;
+        s.moveTo(x + r, y); s.lineTo(x + w - r, y); s.quadraticCurveTo(x + w, y, x + w, y + r);
+        s.lineTo(x + w, y + h - r); s.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+        s.lineTo(x + r, y + h); s.quadraticCurveTo(x, y + h, x, y + h - r);
+        s.lineTo(x, y + r); s.quadraticCurveTo(x, y, x + r, y);
+        return s;
+      };
+      const phone = new THREE.Group();
+      const bodyGeo = new THREE.ExtrudeGeometry(roundedRect(W, H, R), { depth: D, bevelEnabled: true, bevelThickness: 0.04, bevelSize: 0.04, bevelSegments: 6, curveSegments: 24 });
+      bodyGeo.translate(0, 0, -D / 2);
+      const body = new THREE.Mesh(bodyGeo, new THREE.MeshStandardMaterial({ color: 0x2a2a30, metalness: 0.85, roughness: 0.28 }));
+      phone.add(body);
+
+      // Screen drawn on a canvas so it can animate
+      const SC = document.createElement('canvas'); SC.width = 540; SC.height = 1120;
+      const sx = SC.getContext('2d');
+      const screenTex = new THREE.CanvasTexture(SC);
+      screenTex.encoding = THREE.sRGBEncoding;
+      screenTex.anisotropy = 4;
+      const screen = new THREE.Mesh(new THREE.PlaneGeometry(W - 0.1, H - 0.1), new THREE.MeshBasicMaterial({ map: screenTex, transparent: true }));
+      screen.position.z = D / 2 + 0.045;
+      phone.add(screen);
+      // Camera bump on the back
+      const bump = new THREE.Mesh(new THREE.ExtrudeGeometry(roundedRect(0.62, 0.62, 0.16), { depth: 0.05, bevelEnabled: true, bevelThickness: 0.02, bevelSize: 0.02, bevelSegments: 3 }),
+        new THREE.MeshStandardMaterial({ color: 0x3a3a42, metalness: 0.9, roughness: 0.2 }));
+      bump.rotation.y = Math.PI; bump.position.set(0.42, 1.3, -D / 2 - 0.04);
+      phone.add(bump);
+      const lensMat = new THREE.MeshStandardMaterial({ color: 0x0b0b0e, metalness: 1, roughness: 0.05 });
+      [[0.3, 1.42], [0.3, 1.18], [0.54, 1.3]].forEach(([x, y]) => {
+        const lens = new THREE.Mesh(new THREE.CylinderGeometry(0.09, 0.09, 0.05, 24), lensMat);
+        lens.rotation.x = Math.PI / 2; lens.position.set(x, y, -D / 2 - 0.12); phone.add(lens);
+      });
+      scene.add(phone);
+
+      const rr = (c, x, y, w, h, r) => { c.beginPath(); c.moveTo(x + r, y); c.arcTo(x + w, y, x + w, y + h, r); c.arcTo(x + w, y + h, x, y + h, r); c.arcTo(x, y + h, x, y, r); c.arcTo(x, y, x + w, y, r); c.closePath(); };
+      const bars = [0.45, 0.7, 0.35, 0.9, 0.55, 0.75, 0.6];
+      const rows = [['Groceries', '₹1,240', '#ff6a3d'], ['Transport', '₹380', '#6a7bff'], ['Coffee', '₹220', '#ffb15c'], ['Rent', '₹12,000', '#3ddc84']];
+      function drawScreen(t) {
+        const w = SC.width, h = SC.height;
+        sx.clearRect(0, 0, w, h);
+        sx.save(); rr(sx, 0, 0, w, h, 70); sx.clip();
+        const g = sx.createLinearGradient(0, 0, 0, h); g.addColorStop(0, '#16120f'); g.addColorStop(1, '#0b0b0d');
+        sx.fillStyle = g; sx.fillRect(0, 0, w, h);
+        // status bar + island
+        sx.fillStyle = '#f4efe9'; sx.font = '600 26px Inter, sans-serif'; sx.fillText('9:41', 52, 62);
+        sx.fillStyle = '#000'; rr(sx, w / 2 - 80, 26, 160, 46, 23); sx.fill();
+        sx.fillStyle = '#f4efe9'; rr(sx, w - 100, 44, 46, 20, 6); sx.fill();
+        // header
+        sx.fillStyle = '#9b958e'; sx.font = '500 26px Inter, sans-serif'; sx.fillText('This month', 44, 160);
+        const total = 13840 + Math.round(Math.sin(t * 0.6) * 40);
+        sx.fillStyle = '#f4efe9'; sx.font = '800 76px "Bricolage Grotesque", sans-serif'; sx.fillText('₹' + total.toLocaleString('en-IN'), 40, 240);
+        sx.fillStyle = '#3ddc84'; sx.font = '600 24px Inter, sans-serif'; sx.fillText('▼ 12% vs last month', 44, 286);
+        // chart card
+        sx.fillStyle = 'rgba(255,255,255,0.05)'; rr(sx, 32, 320, w - 64, 330, 36); sx.fill();
+        const bw = 44, gap = (w - 64 - 60 - bw * 7) / 6;
+        bars.forEach((b, i) => {
+          const v = b * (0.75 + 0.25 * Math.sin(t * 1.4 + i * 0.9));
+          const bh = 220 * v, x = 62 + i * (bw + gap), y = 600 - bh;
+          const bg = sx.createLinearGradient(0, y, 0, 600); bg.addColorStop(0, i === 3 ? '#ffb15c' : '#ff6a3d'); bg.addColorStop(1, 'rgba(255,106,61,0.25)');
+          sx.fillStyle = bg; rr(sx, x, y, bw, bh, 14); sx.fill();
+          sx.fillStyle = '#5e5a55'; sx.font = '500 20px Inter, sans-serif'; sx.fillText('MTWTFSS'[i], x + 14, 634);
         });
-    </script>
+        // rows
+        rows.forEach((r, i) => {
+          const y = 690 + i * 100;
+          sx.fillStyle = 'rgba(255,255,255,0.04)'; rr(sx, 32, y, w - 64, 84, 24); sx.fill();
+          sx.fillStyle = r[2]; rr(sx, 52, y + 18, 48, 48, 14); sx.fill();
+          sx.fillStyle = '#f4efe9'; sx.font = '600 28px Inter, sans-serif'; sx.fillText(r[0], 120, y + 52);
+          sx.textAlign = 'right'; sx.fillText(r[1], w - 56, y + 52); sx.textAlign = 'left';
+        });
+        // home indicator
+        sx.fillStyle = 'rgba(244,239,233,0.6)'; rr(sx, w / 2 - 90, h - 34, 180, 10, 5); sx.fill();
+        sx.restore();
+        screenTex.needsUpdate = true;
+      }
+
+      // ---- Floating app tiles ----
+      const tileTex = (draw) => {
+        const c = document.createElement('canvas'); c.width = c.height = 256;
+        const x = c.getContext('2d'); draw(x); const tx = new THREE.CanvasTexture(c); tx.encoding = THREE.sRGBEncoding; return tx;
+      };
+      const imgTex = src => { const tx = new THREE.TextureLoader().load(src); tx.encoding = THREE.sRGBEncoding; return tx; };
+      const glyph = (bg1, bg2, text, font) => tileTex(x => {
+        const g = x.createLinearGradient(0, 0, 256, 256); g.addColorStop(0, bg1); g.addColorStop(1, bg2);
+        x.fillStyle = g; x.fillRect(0, 0, 256, 256);
+        x.fillStyle = '#fff'; x.font = font; x.textAlign = 'center'; x.textBaseline = 'middle'; x.fillText(text, 128, 136);
+      });
+      const tileDefs = [
+        { tex: imgTex('MonthlyExpenseManaeger.png'), pos: [-2.5, 1.5, -0.6], s: 0.95 },
+        { tex: imgTex('1024.png'), pos: [2.4, -1.4, 0.4], s: 0.9 },
+        { tex: glyph('#ff7a45', '#ff3d2e', '{ }', '700 110px "JetBrains Mono", monospace'), pos: [2.2, 1.9, -1.2], s: 0.7 },
+        { tex: glyph('#2a2a33', '#121216', 'UI', '800 110px "Bricolage Grotesque", sans-serif'), pos: [-2.3, -1.8, 0.2], s: 0.7 },
+        { tex: glyph('#ffb15c', '#ff6a3d', '★', '400 140px sans-serif'), pos: [0.2, 2.6, -2], s: 0.55 },
+        { tex: glyph('#6a7bff', '#3a46c9', '⌘', '400 130px sans-serif'), pos: [-0.6, -2.6, -1.4], s: 0.55 }
+      ];
+      const tiles = tileDefs.map((d, i) => {
+        const geo = new THREE.ExtrudeGeometry(roundedRect(1, 1, 0.24), { depth: 0.1, bevelEnabled: true, bevelThickness: 0.03, bevelSize: 0.03, bevelSegments: 4, curveSegments: 12 });
+        geo.translate(0, 0, -0.05);
+        // Map UVs of the front face to 0..1 so the texture fills it
+        const uv = geo.attributes.uv, pos = geo.attributes.position;
+        for (let k = 0; k < uv.count; k++) uv.setXY(k, pos.getX(k) + 0.5, pos.getY(k) + 0.5);
+        const side = new THREE.MeshStandardMaterial({ color: 0x1c1c22, metalness: 0.6, roughness: 0.35 });
+        const front = new THREE.MeshStandardMaterial({ map: d.tex, metalness: 0.1, roughness: 0.4 });
+        const m = new THREE.Mesh(geo, [front, side]);
+        m.scale.setScalar(d.s);
+        m.position.set(...d.pos);
+        m.userData = { base: new THREE.Vector3(...d.pos), phase: i * 1.3, spin: (i % 2 ? 1 : -1) * 0.25 };
+        m.rotation.set(Math.random() * 0.4 - 0.2, Math.random() * 0.8 - 0.4, Math.random() * 0.4 - 0.2);
+        scene.add(m);
+        return m;
+      });
+
+      // ---- Particles ----
+      const N = 420, pGeo = new THREE.BufferGeometry(), arr = new Float32Array(N * 3);
+      for (let i = 0; i < N; i++) {
+        const r = 4 + Math.random() * 6, th = Math.random() * Math.PI * 2, ph = Math.acos(2 * Math.random() - 1);
+        arr[i * 3] = r * Math.sin(ph) * Math.cos(th); arr[i * 3 + 1] = r * Math.sin(ph) * Math.sin(th); arr[i * 3 + 2] = r * Math.cos(ph) - 3;
+      }
+      pGeo.setAttribute('position', new THREE.BufferAttribute(arr, 3));
+      const particles = new THREE.Points(pGeo, new THREE.PointsMaterial({ color: 0xffb08a, size: 0.035, transparent: true, opacity: 0.7, depthWrite: false }));
+      scene.add(particles);
+
+      // Glow ring behind phone
+      const ring = new THREE.Mesh(new THREE.TorusGeometry(2.6, 0.012, 8, 160), new THREE.MeshBasicMaterial({ color: 0xff6a3d, transparent: true, opacity: 0.45 }));
+      ring.position.z = -1.6; ring.rotation.x = 1.15; scene.add(ring);
+      const ring2 = ring.clone(); ring2.scale.setScalar(1.35); ring2.material = ring.material.clone(); ring2.material.opacity = 0.18; ring2.rotation.x = 1.3; ring2.rotation.y = 0.3; scene.add(ring2);
+
+      // ---- Interaction ----
+      const mouse = { x: 0, y: 0, tx: 0, ty: 0 };
+      window.addEventListener('pointermove', e => { mouse.tx = (e.clientX / innerWidth) * 2 - 1; mouse.ty = (e.clientY / innerHeight) * 2 - 1; });
+      // Drag to spin the phone
+      let drag = null, spinVel = 0, spin = 0;
+      canvas.addEventListener('pointerdown', e => { drag = e.clientX; canvas.setPointerCapture(e.pointerId); });
+      canvas.addEventListener('pointermove', e => { if (drag !== null) { spinVel = (e.clientX - drag) * 0.01; drag = e.clientX; } });
+      const endDrag = () => { drag = null; };
+      canvas.addEventListener('pointerup', endDrag); canvas.addEventListener('pointercancel', endDrag);
+      canvas.style.cursor = 'grab'; canvas.style.touchAction = 'pan-y';
+
+      let spread = 1;
+      function resize() {
+        const w = canvas.clientWidth, h = canvas.clientHeight;
+        renderer.setSize(w, h, false);
+        camera.aspect = w / h;
+        camera.position.z = w < 600 ? 12.2 : 11;
+        camera.updateProjectionMatrix();
+        // Pull the floating tiles inward on narrow canvases so none get clipped
+        spread = Math.max(0.55, Math.min(1, camera.aspect / 1.15));
+      }
+      resize(); window.addEventListener('resize', resize);
+
+      let visible = true;
+      new IntersectionObserver(([e]) => { visible = e.isIntersecting; }).observe(canvas);
+
+      const clock = new THREE.Clock();
+      let lastScreen = 0;
+      function frame() {
+        requestAnimationFrame(frame);
+        if (!visible) return;
+        const t = clock.getElapsedTime();
+        mouse.x += (mouse.tx - mouse.x) * 0.05; mouse.y += (mouse.ty - mouse.y) * 0.05;
+        const scroll = Math.min(1, scrollY / innerHeight);
+
+        spin += spinVel; spinVel *= 0.94;
+        if (drag === null) spin += (0 - spin) * 0.02;
+        const idle = reduceMotion ? 0 : 1;
+        phone.rotation.y = -0.38 + Math.sin(t * 0.5) * 0.18 * idle + mouse.x * 0.45 + spin + scroll * 1.4;
+        phone.rotation.x = 0.08 + mouse.y * 0.25 - scroll * 0.3;
+        phone.rotation.z = 0.06 + Math.sin(t * 0.4) * 0.03 * idle;
+        phone.position.y = Math.sin(t * 0.9) * 0.1 * idle - scroll * 1.2;
+
+        tiles.forEach(m => {
+          const u = m.userData;
+          m.position.x = u.base.x * spread + mouse.x * 0.35 * (1 + u.base.z * 0.3);
+          m.position.y = u.base.y + Math.sin(t * 0.8 + u.phase) * 0.18 * idle - mouse.y * 0.25 + scroll * u.base.y * 0.6;
+          m.rotation.y += 0.004 * u.spin * 4 * idle;
+          m.rotation.x = Math.sin(t * 0.6 + u.phase) * 0.25 * idle;
+        });
+        particles.rotation.y = t * 0.02 * idle + mouse.x * 0.1;
+        particles.rotation.x = mouse.y * 0.05;
+        ring.rotation.z = t * 0.15 * idle; ring2.rotation.z = -t * 0.1 * idle;
+
+        if (t - lastScreen > 1 / 30) { drawScreen(t); lastScreen = t; }
+        renderer.render(scene, camera);
+      }
+      document.fonts && document.fonts.ready.then(() => drawScreen(0));
+      frame();
+    });
+  </script>
 </body>
 </html>
